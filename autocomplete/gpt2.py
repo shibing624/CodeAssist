@@ -3,13 +3,13 @@
 @author:XuMing(xuming624@qq.com)
 @description: 
 """
-
+import os
 import torch
 from simpletransformers.language_generation import LanguageGenerationModel
 from simpletransformers.language_modeling import LanguageModelingModel
 
 use_cuda = torch.cuda.is_available()
-model = LanguageGenerationModel("gpt2", "gpt2", args={"max_length": 200, "cache_dir": None}, use_cuda=use_cuda)
+model = LanguageGenerationModel("gpt2", "gpt2", args={"max_length": 200, "cache_dir": None, }, use_cuda=use_cuda)
 
 prompts = [
     "Despite the recent successes of deep learning, such models are still far from some human abilities like learning from few examples, reasoning and explaining decisions. In this paper, we focus on organ annotation in medical images and we introduce a reasoning framework that is based on learning fuzzy relations on a small dataset for generating explanations.",
@@ -50,13 +50,13 @@ def finetune_lm():
         "gradient_accumulation_steps": 8,
         "num_train_epochs": 1,
         "mlm": False,
-        "cache_dir": None,
-        "output_dir": f"outputs/fine-tuned/",
+        "cache_dir": os.path.expanduser("~/.cache/huggingface/transformers/"),
+        "output_dir": "outputs/fine-tuned/",
     }
 
     model = LanguageModelingModel("gpt2", "gpt2", args=train_args, use_cuda=use_cuda)
-    train_file = 'download/train.txt'
-    valid_file = 'download/valid.txt'
+    train_file = "download/train.txt"
+    valid_file = "download/valid.txt"
     model.train_model(train_file, eval_file=valid_file)
     print(model.eval_model(valid_file))
 
