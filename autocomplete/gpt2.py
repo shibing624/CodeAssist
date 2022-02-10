@@ -27,7 +27,7 @@ prompts = [
 
 
 def test_gpt2():
-    model = LanguageGenerationModel("gpt2", "gpt2", args={"max_length": 200, "cache_dir": None}, use_cuda=use_cuda)
+    model = LanguageGenerationModel("gpt2", "gpt2", args={"max_length": 64, "cache_dir": None}, use_cuda=use_cuda)
 
     for prompt in prompts:
         # Generate text using the model. Verbose set to False to prevent logging generated sequences.
@@ -61,7 +61,7 @@ def finetune_lm():
     print(model.eval_model(valid_file))
 
     # Use finetuned model
-    model = LanguageGenerationModel("gpt2", "outputs/fine-tuned", args={"max_length": 200}, use_cuda=use_cuda)
+    model = LanguageGenerationModel("gpt2", "outputs/fine-tuned", args={"max_length": 64}, use_cuda=use_cuda)
     for prompt in prompts:
         # Generate text using the model. Verbose set to False to prevent logging generated sequences.
         generated = model.generate(prompt, verbose=False)

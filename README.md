@@ -13,8 +13,6 @@ code-autocomplete, a code completion plugin for Python.
 
 
 **Guide**
-- [Question](#Question)
-- [Solution](#Solution)
 - [Feature](#Feature)
 - [Install](#install)
 - [Usage](#usage)
@@ -22,8 +20,7 @@ code-autocomplete, a code completion plugin for Python.
 - [Citation](#Citation)
 - [Reference](#reference)
 
-# Question
-# Solution
+# Feature
 
 
 # Demo
@@ -46,13 +43,40 @@ python3 setup.py install
 
 # Usage
 
-### 1. 计算文本向量
+### Code Completion
 
-基于`pretrained model`计算文本向量
+基于`GPT-2 model`预测整行代码
 
 
-示例[computing_embeddings.py](./examples/computing_embeddings.py)
+示例[gpt2_demo.py](./examples/gpt2_demo.py)
+```python
+import sys
 
+sys.path.append('..')
+from autocomplete.gpt2 import predict
+
+if __name__ == '__main__':
+    prompts = [
+        """from torch import nn
+        class LSTM(Module):
+            def __init__(self, *,
+                         n_tokens: int,
+                         embedding_size: int,
+                         hidden_size: int,
+                         n_layers: int):""",
+        """import numpy as np
+        import torch
+        import torch.nn as""",
+        "import java.util.ArrayList;",
+    ]
+    for prompt in prompts:
+        res = predict(prompt, model_dir='shibing624/code-autocomplete-gpt2')
+        print("\n\n======================\n\n")
+        print("Query:", prompt)
+        print("\nResult:, res")
+        print("\n\n======================\n\n")
+
+```
 
 
 # Contact
@@ -70,10 +94,12 @@ python3 setup.py install
 如果你在研究中使用了code-autocomplete，请按如下格式引用：
 
 ```latex
-@software{code-autocomplete,
+@misc{code-autocomplete,
   author = {Xu Ming},
   title = {code-autocomplete: Code AutoComplete with GPT model},
   year = {2022},
+  publisher = {GitHub},
+  journal = {GitHub repository},
   url = {https://github.com/shibing624/code-autocomplete},
 }
 ```
