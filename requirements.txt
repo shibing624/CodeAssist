@@ -1,7 +1,7 @@
 loguru
 tqdm
 torch>=1.6.0
-scikit-learn
 transformers>=4.6.0,<5.0.0
+simpletransformers
 numpy
 fastapi
