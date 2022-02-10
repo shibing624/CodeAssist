@@ -5,8 +5,6 @@
 """
 
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
 from simpletransformers.language_generation import LanguageGenerationModel
 from simpletransformers.language_modeling import LanguageModelingModel
 
@@ -57,8 +55,10 @@ def finetune_lm():
     }
 
     model = LanguageModelingModel("gpt2", "gpt2", args=train_args, use_cuda=use_cuda)
-    model.train_model("train.txt", eval_file="train.txt")
-    print(model.eval_model("train.txt"))
+    train_file = 'download/train.txt'
+    valid_file = 'download/valid.txt'
+    model.train_model(train_file, eval_file=valid_file)
+    print(model.eval_model(valid_file))
 
     # Use finetuned model
     model = LanguageGenerationModel("gpt2", "outputs/fine-tuned", args={"max_length": 200}, use_cuda=use_cuda)

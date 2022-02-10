@@ -197,8 +197,8 @@ def main():
     logger.debug(f'Source_files size: {len(source_files)}')
 
     train_valid_split = int(len(source_files) * 0.9)
-    train_file = 'download/train.py'
-    valid_file = 'download/valid.py'
+    train_file = 'download/train.txt'
+    valid_file = 'download/valid.txt'
     concat_and_save(Path(train_file), source_files[:train_valid_split])
     concat_and_save(Path(valid_file), source_files[train_valid_split:])
     logger.info(f'Save train file: {train_file}, valid file: {valid_file}')
