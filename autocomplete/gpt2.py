@@ -15,18 +15,16 @@ prompts = [
     "Despite the recent successes of deep learning, such models are still far from some human abilities like learning from few examples, reasoning and explaining decisions. In this paper, we focus on organ annotation in medical images and we introduce a reasoning framework that is based on learning fuzzy relations on a small dataset for generating explanations.",
     "There is a growing interest and literature on intrinsic motivations and open-ended learning in both cognitive robotics and machine learning on one side, ",
     """from torch import nn
-    
-    from labml_helpers.module import Module
-    from labml_nn.lstm import LSTM
-    
-    
     class LSTM(Module):
         def __init__(self, *,
                      n_tokens: int,
                      embedding_size: int,
-                     hidden_size int,
-                     n_layers int):
-            """,
+                     hidden_size: int,
+                     n_layers: int):""",
+    """import numpy as np
+    import torch
+    import torch.nn as""",
+    "import java.util.ArrayList",
 ]
 
 for prompt in prompts:
