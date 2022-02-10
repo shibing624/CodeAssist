@@ -9,7 +9,7 @@ from simpletransformers.language_generation import LanguageGenerationModel
 from simpletransformers.language_modeling import LanguageModelingModel
 
 use_cuda = torch.cuda.is_available()
-model = LanguageGenerationModel("gpt2", "gpt2", args={"max_length": 200, "cache_dir": None, }, use_cuda=use_cuda)
+model = LanguageGenerationModel("gpt2", "gpt2", args={"max_length": 200, "cache_dir": None}, use_cuda=use_cuda)
 
 prompts = [
     "Despite the recent successes of deep learning, such models are still far from some human abilities like learning from few examples, reasoning and explaining decisions. In this paper, we focus on organ annotation in medical images and we introduce a reasoning framework that is based on learning fuzzy relations on a small dataset for generating explanations.",
