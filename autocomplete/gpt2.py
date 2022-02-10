@@ -9,8 +9,6 @@ from simpletransformers.language_generation import LanguageGenerationModel
 from simpletransformers.language_modeling import LanguageModelingModel
 
 use_cuda = torch.cuda.is_available()
-model = LanguageGenerationModel("gpt2", "gpt2", args={"max_length": 200, "cache_dir": None}, use_cuda=use_cuda)
-
 prompts = [
     "Despite the recent successes of deep learning, such models are still far from some human abilities like learning from few examples, reasoning and explaining decisions. In this paper, we focus on organ annotation in medical images and we introduce a reasoning framework that is based on learning fuzzy relations on a small dataset for generating explanations.",
     "There is a growing interest and literature on intrinsic motivations and open-ended learning in both cognitive robotics and machine learning on one side, ",
@@ -27,14 +25,18 @@ prompts = [
     "import java.util.ArrayList",
 ]
 
-for prompt in prompts:
-    # Generate text using the model. Verbose set to False to prevent logging generated sequences.
-    generated = model.generate(prompt, verbose=False)
 
-    generated = ".".join(generated[0].split(".")[:-1]) + "."
-    print("=============================================================================")
-    print(generated)
-    print("=============================================================================")
+def test_gpt2():
+    model = LanguageGenerationModel("gpt2", "gpt2", args={"max_length": 200, "cache_dir": None}, use_cuda=use_cuda)
+
+    for prompt in prompts:
+        # Generate text using the model. Verbose set to False to prevent logging generated sequences.
+        generated = model.generate(prompt, verbose=False)
+
+        generated = ".".join(generated[0].split(".")[:-1]) + "."
+        print("=============================================================================")
+        print(generated)
+        print("=============================================================================")
 
 
 def finetune_lm():
@@ -70,4 +72,15 @@ def finetune_lm():
         print("=============================================================================")
 
 
-finetune_lm()
+def predict(prompt, model_dir="outputs/fine-tuned"):
+    model = LanguageGenerationModel("gpt2", model_dir, args={"max_length": 64}, use_cuda=use_cuda)
+    # Generate text using the model. Verbose set to False to prevent logging generated sequences.
+    generated = model.generate(prompt, verbose=False)
+    generated = ".".join(generated[0].split(".")[:-1]) + "."
+    print(generated)
+    return generated
+
+
+if __name__ == '__main__':
+    test_gpt2()
+    finetune_lm()
