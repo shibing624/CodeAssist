@@ -47,4 +47,4 @@ async def autocomplete(q: str = Query(..., min_length=1, max_length=512, title='
 
 
 if __name__ == '__main__':
-    uvicorn.run(app=app, host='0.0.0.0', port=5000)
+    uvicorn.run(app=app, host='0.0.0.0', port=8001)
