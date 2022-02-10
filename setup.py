@@ -32,7 +32,7 @@ setup(
         'Topic :: Text Processing :: Indexing',
         'Topic :: Text Processing :: Linguistic',
     ],
-    keywords='word embedding,code-autocomplete,Chinese Text Similarity Calculation Tool,similarity,word2vec',
+    keywords='autocomplete,code-autocomplete',
     install_requires=reqs.strip().split('\n'),
     packages=find_packages(exclude=['tests']),
     package_dir={'autocomplete': 'autocomplete'},

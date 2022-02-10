@@ -7,18 +7,15 @@
 [![Wechat Group](http://vlog.sfyc.ltd/wechat_everyday/wxgroup_logo.png?imageView2/0/w/60/h/20)](#Contact)
 
 # Code AutoComplete
-code-autocomplete, text to vector.
+code-autocomplete, a code completion plugin for Python.
 
-文本向量表征工具，把文本转化为向量矩阵，是文本进行计算机处理的第一步。
-
-**code-autocomplete**实现了Word2Vec、RankBM25、BERT、Sentence-BERT、CoSENT等多种文本表征、文本相似度计算模型，并在文本语义匹配（相似度计算）任务上比较了各模型的效果。
+**code-autocomplete**实现了Python代码行粒度和块粒度自动补全功能。
 
 
 **Guide**
 - [Question](#Question)
 - [Solution](#Solution)
 - [Feature](#Feature)
-- [Evaluate](#Evaluate)
 - [Install](#install)
 - [Usage](#usage)
 - [Contact](#Contact)
@@ -26,9 +23,6 @@ code-autocomplete, text to vector.
 - [Reference](#reference)
 
 # Question
-文本向量表示咋做？文本匹配任务用哪个模型效果好？
-
-许多NLP任务的成功离不开训练优质有效的文本表示向量。特别是文本语义匹配（Semantic Textual Similarity，如paraphrase检测、QA的问题对匹配）、文本向量检索（Dense Text Retrieval）等任务。
 # Solution
 
 
@@ -78,7 +72,7 @@ python3 setup.py install
 ```latex
 @software{code-autocomplete,
   author = {Xu Ming},
-  title = {code-autocomplete: A Tool for Text to Vector},
+  title = {code-autocomplete: Code AutoComplete with GPT model},
   year = {2022},
   url = {https://github.com/shibing624/code-autocomplete},
 }
@@ -99,10 +93,4 @@ python3 setup.py install
 之后即可提交PR。
 
 # Reference
-- [将句子表示为向量（上）：无监督句子表示学习（sentence embedding）](https://www.cnblogs.com/llhthinker/p/10335164.html)
-- [将句子表示为向量（下）：无监督句子表示学习（sentence embedding）](https://www.cnblogs.com/llhthinker/p/10341841.html)
-- [A Simple but Tough-to-Beat Baseline for Sentence Embeddings[Sanjeev Arora and Yingyu Liang and Tengyu Ma, 2017]](https://openreview.net/forum?id=SyK00v5xx)
-- [四种计算文本相似度的方法对比[Yves Peirsman]](https://zhuanlan.zhihu.com/p/37104535)
-- [Improvements to BM25 and Language Models Examined](http://www.cs.otago.ac.nz/homepages/andrew/papers/2014-2.pdf)
-- [CoSENT：比Sentence-BERT更有效的句向量方案](https://kexue.fm/archives/8847)
-- [谈谈文本匹配和多轮检索](https://zhuanlan.zhihu.com/p/111769969)
+- [https://github.com/galois-autocompleter/galois-autocompleter](https://github.com/galois-autocompleter/galois-autocompleter)
