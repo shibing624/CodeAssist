@@ -28,5 +28,5 @@ if __name__ == '__main__':
         res = infer.predict(prompt)
         print("\n\n======================\n\n")
         print("Query:", prompt)
-        print("\nResult:, res")
+        print("\nResult:", res)
         print("\n\n======================\n\n")
