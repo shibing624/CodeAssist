@@ -30,3 +30,4 @@ if __name__ == '__main__':
         res = infer.predict(prompt)
         print("Query:", prompt)
         print("Result:", res)
+        print("=" * 20)
