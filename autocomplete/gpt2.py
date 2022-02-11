@@ -20,14 +20,14 @@ def predict_with_original_gpt2(prompts):
     for prompt in prompts:
         # Generate text using the model. Verbose set to False to prevent logging generated sequences.
         generated = model.generate(prompt, verbose=False)
-
         generated = generated[0]
-        print("=============================================================================")
         print(generated)
-        print("=============================================================================")
+        print("=" * 20)
 
 
-def train(model_dir="outputs/fine-tuned/", train_file="download/train.txt", valid_file="download/valid.txt",
+def train(model_dir="outputs/fine-tuned/",
+          train_file="download/train.txt",
+          valid_file="download/valid.txt",
           num_train_epochs=3):
     train_args = {
         "reprocess_input_data": True,
