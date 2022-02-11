@@ -9,7 +9,7 @@
 # Code AutoComplete
 code-autocomplete, a code completion plugin for Python.
 
-**code-autocomplete**实现了Python代码行粒度和块粒度自动补全功能。
+**code-autocomplete** 实现了Python代码行粒度和块粒度自动补全功能。
 
 
 **Guide**
@@ -23,7 +23,7 @@ code-autocomplete, a code completion plugin for Python.
 # Feature
 - GPT2-based code completion
 - Code completion for Python, other language is coming soon
-- Line and block completion
+- Line and block code completion
 - Train(Fine-tune GPT2) and predict model with your own data
 
 # Install
