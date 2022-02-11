@@ -18,7 +18,7 @@ setup(
     author='XuMing',
     author_email='xuming624@qq.com',
     url='https://github.com/shibing624/code-autocomplete',
-    license="Apache License 2.0",
+    license='Apache License 2.0',
     zip_safe=False,
     python_requires='>=3.5',
     classifiers=[

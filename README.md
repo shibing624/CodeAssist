@@ -21,11 +21,10 @@ code-autocomplete, a code completion plugin for Python.
 - [Reference](#reference)
 
 # Feature
-
-
-# Demo
-
-http://42.193.145.218/product/short_text_sim/
+- GPT2-based code completion
+- Code completion for Python, other language is coming soon
+- Line and block completion
+- Train(Fine-tune GPT2) and predict model with your own data
 
 # Install
 ```
@@ -46,7 +45,7 @@ python3 setup.py install
 ### Code Completion
 
 
-开源项目：[code-autocomplete](https://github.com/shibing624/code-autocomplete)，可支持GPT2模型，通过如下命令调用：
+基于GPT2模型预测补全代码，通过如下命令调用：
 
 ```python
 from autocomplete.gpt2 import Infer
@@ -55,6 +54,10 @@ i = m.predict('import torch.nn as')
 print(i)
 ```
 
+output:
+```shell
+import torch.nn as nn
+```
 当然，你也可使用官方的huggingface/transformers调用：
 
 *Please use 'GPT2' related functions to load this model!*
@@ -81,7 +84,7 @@ prompts = [
     """import numpy as np
     import torch
     import torch.nn as""",
-    "import java.util.ArrayList",
+    "import java.util.ArrayList;",
     "def factorial(n):",
 ]
 for prompt in prompts:
@@ -101,6 +104,27 @@ for prompt in prompts:
     print("=" * 20)
 ```
 
+output:
+```python
+from torch import nn
+class LSTM(Module):
+    def __init__(self, *,
+                 n_tokens: int,
+                 embedding_size: int,
+                 hidden_size: int,
+                 n_layers: int):
+        self.hidden_size = hidden_size
+        self.embedding_size = embedding_size
+
+====================
+
+import numpy as np
+import torch
+import torch.nn as nn
+
+====================
+...
+```
 
 
 # Contact

@@ -6,7 +6,9 @@
 import os
 import torch
 from transformers import GPT2Tokenizer, GPT2LMHeadModel
+import transformers
 
+transformers.logging.set_verbosity_error()
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -24,7 +26,7 @@ prompts = [
     """import numpy as np
     import torch
     import torch.nn as""",
-    "import java.util.ArrayList",
+    "import java.util.ArrayList;",
     "def factorial(n):",
 ]
 for prompt in prompts:

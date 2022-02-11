@@ -34,7 +34,7 @@ if __name__ == '__main__':
         """import numpy as np
         import torch
         import torch.nn as""",
-        "import java.util.ArrayList",
+        "import java.util.ArrayList;",
     ]
     predict_with_original_gpt2(prompts)
     if args.do_train:

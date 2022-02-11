@@ -7,7 +7,9 @@ import os
 import torch
 from simpletransformers.language_generation import LanguageGenerationModel
 from simpletransformers.language_modeling import LanguageModelingModel
+import transformers
 
+transformers.logging.set_verbosity_error()
 use_cuda = torch.cuda.is_available()
 
 
@@ -55,13 +57,13 @@ class Infer:
         # cache_dir: None means use default cache dir: ~/.cache/huggingface/transformers/
         self.model = LanguageGenerationModel(model_name, model_dir, args=args, use_cuda=use_cuda)
 
-    def predict(self, query):
+    def predict(self, prompt):
         """
         Generate text using the model. Verbose set to False to prevent logging generated sequences.
-        :param query: str, input string
+        :param prompt: str, input string
         :return: str
         """
-        generated = self.model.generate(query, verbose=False)
+        generated = self.model.generate(prompt, verbose=False)
         generated = generated[0]
         return generated
 
