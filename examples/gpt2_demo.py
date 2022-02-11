@@ -7,7 +7,7 @@
 import sys
 
 sys.path.append('..')
-from autocomplete.gpt2 import predict
+from autocomplete.gpt2 import Infer
 
 if __name__ == '__main__':
     prompts = [
@@ -23,8 +23,9 @@ if __name__ == '__main__':
         import torch.nn as""",
         "import java.util.ArrayList;",
     ]
+    infer = Infer(model_name="gpt2", model_dir="../autocomplete/outputs/fine-tuned", use_cuda=False)
     for prompt in prompts:
-        res = predict(prompt, model_dir='shibing624/code-autocomplete-gpt2')
+        res = infer.predict(prompt)
         print("\n\n======================\n\n")
         print("Query:", prompt)
         print("\nResult:, res")

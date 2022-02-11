@@ -8,13 +8,16 @@ import os
 from fastapi import FastAPI, Query
 from starlette.middleware.cors import CORSMiddleware
 import torch
-from simpletransformers.language_generation import LanguageGenerationModel
-from simpletransformers.language_modeling import LanguageModelingModel
 from loguru import logger
 
+sys.path.append('..')
+from autocomplete.gpt2 import Infer
+
+pwd_path = os.path.abspath(os.path.dirname(__file__))
 use_cuda = torch.cuda.is_available()
-# Use finetuned model
-gpt2 = LanguageGenerationModel("gpt2", "outputs/fine-tuned", args={"max_length": 200}, use_cuda=use_cuda)
+# Use finetuned GPT2 model
+model_dir = os.path.join(pwd_path, "outputs/fine-tuned/")
+gpt2_infer = Infer(model_name="gpt2", model_dir=model_dir, use_cuda=use_cuda)
 
 # define the app
 app = FastAPI()
@@ -35,9 +38,7 @@ async def index():
 async def autocomplete(q: str = Query(..., min_length=1, max_length=512, title='query')):
     try:
         # Generate text using the model. Verbose set to False to prevent logging generated sequences.
-        generated = gpt2.generate(q, verbose=False)
-        generated = ".".join(generated[0].split(".")[:-1]) + "."
-        print(generated)
+        generated = gpt2_infer.predict(q)
         result_dict = generated
         logger.debug(f"Successfully autocomplete, q:{q}, res:{result_dict}")
         return result_dict
