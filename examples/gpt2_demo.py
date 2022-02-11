@@ -23,7 +23,7 @@ if __name__ == '__main__':
         import torch.nn as""",
         "import java.util.ArrayList;",
     ]
-    infer = Infer(model_name="gpt2", model_dir="../autocomplete/outputs/fine-tuned", use_cuda=False)
+    infer = Infer(model_name="gpt2", model_dir="../autocomplete/outputs/fine-tuned")
     for prompt in prompts:
         res = infer.predict(prompt)
         print("\n\n======================\n\n")

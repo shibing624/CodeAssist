@@ -49,7 +49,7 @@ def train(model_dir="outputs/fine-tuned/", num_train_epochs=3):
 
 
 class Infer:
-    def __init__(self, model_name="gpt2", model_dir="outputs/fine-tuned", use_cuda=True, max_length=64):
+    def __init__(self, model_name="gpt2", model_dir="outputs/fine-tuned", use_cuda=False, max_length=64):
         self.model_name = model_name
         self.model = LanguageGenerationModel(model_name, model_dir, args={"max_length": max_length}, use_cuda=use_cuda)
 
@@ -59,7 +59,8 @@ class Infer:
         :param query: str, input string
         :return: str
         """
-        generated = self.model.generate(query, verbose=False)
+        generated = self.model.generate(query, verbose=True)
+        print("generated:", generated)
         generated = ".".join(generated[0].split(".")[:-1]) + "."
         return generated
 
