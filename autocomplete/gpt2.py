@@ -38,6 +38,7 @@ def train(model_dir="outputs/fine-tuned/", num_train_epochs=3):
         "mlm": False,
         "cache_dir": os.path.expanduser("~/.cache/huggingface/transformers/"),
         "output_dir": model_dir,
+        "dataset_type": "text",
     }
 
     model = LanguageModelingModel("gpt2", "gpt2", args=train_args, use_cuda=use_cuda)
@@ -59,9 +60,8 @@ class Infer:
         :param query: str, input string
         :return: str
         """
-        generated = self.model.generate(query, verbose=True)
-        print("generated:", generated)
-        generated = ".".join(generated[0].split(".")[:-1]) + "."
+        generated = self.model.generate(query, verbose=False)
+        generated = generated[0]
         return generated
 
 
