@@ -19,7 +19,7 @@ def predict_with_original_gpt2(prompts):
         # Generate text using the model. Verbose set to False to prevent logging generated sequences.
         generated = model.generate(prompt, verbose=False)
 
-        generated = ".".join(generated[0].split(".")[:-1]) + "."
+        generated = generated[0]
         print("=============================================================================")
         print(generated)
         print("=============================================================================")
