@@ -144,7 +144,7 @@ import torch.nn as nn
 ```latex
 @misc{code-autocomplete,
   author = {Xu Ming},
-  title = {code-autocomplete: Code AutoComplete with GPT model},
+  title = {code-autocomplete: Code AutoComplete with GPT2 model},
   year = {2022},
   publisher = {GitHub},
   journal = {GitHub repository},
