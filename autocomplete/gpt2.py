@@ -51,7 +51,9 @@ def train(model_dir="outputs/fine-tuned/", train_file="download/train.txt", vali
 class Infer:
     def __init__(self, model_name="gpt2", model_dir="outputs/fine-tuned", use_cuda=use_cuda, max_length=64):
         self.model_name = model_name
-        self.model = LanguageGenerationModel(model_name, model_dir, args={"max_length": max_length}, use_cuda=use_cuda)
+        args = {"max_length": max_length, "cache_dir": None}
+        # cache_dir: None means use default cache dir: ~/.cache/huggingface/transformers/
+        self.model = LanguageGenerationModel(model_name, model_dir, args=args, use_cuda=use_cuda)
 
     def predict(self, query):
         """
