@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 with open('README.md', 'r', encoding='utf-8') as f:
     readme = f.read()
@@ -37,5 +37,5 @@ setup(
     packages=find_packages(exclude=['tests']),
     package_dir={'autocomplete': 'autocomplete'},
     package_data={'autocomplete': ['*.*', '../LICENSE', '../README.*', '../*.txt', 'utils/*',
-                               'data/*',  ]}
+                                   'data/*', ]}
 )
