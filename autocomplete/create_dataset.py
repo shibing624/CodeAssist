@@ -4,6 +4,7 @@
 @description: Parse all files and write to a single file
 refer: https://github.com/labmlai/python_autocomplete/blob/master/python_autocomplete/create_dataset.py
 """
+import glob
 import re
 import string
 import urllib.error
@@ -21,63 +22,30 @@ ssl._create_default_https_context = ssl._create_unverified_context
 PRINTABLE = set(string.printable)
 
 
-class PythonFile(NamedTuple):
-    relative_path: str
-    project: str
-    path: Path
-
-
-def get_python_files():
+def get_python_files(dir_path: str = "download/source"):
     """
     Get list of python files and their paths inside `data/source` folder
     """
-
-    source_path = Path('download/source')
-    files: List[PythonFile] = []
-
-    def _add_file(path: Path):
-        """
-        Add a file to the list of tiles
-        """
-        project = path.relative_to(source_path).parents
-        relative_path = path.relative_to(source_path / project[len(project) - 3])
-
-        files.append(PythonFile(relative_path=str(relative_path),
-                                project=str(project[len(project) - 2]),
-                                path=path))
-
-    def _collect_python_files(path: Path):
-        """
-        Recursively collect files
-        """
-        for p in path.iterdir():
-            if p.is_dir():
-                _collect_python_files(p)
-            else:
-                _add_file(p)
-
-    _collect_python_files(source_path)
+    files = glob.glob(f"{dir_path}/**/*.py", recursive=True)
 
     return files
 
 
-def read_file(path: Path) -> str:
+def read_file(path: str) -> str:
     """
     Read a file
     """
-    with open(str(path)) as f:
+    with open(path, 'r', encoding='utf8') as f:
         content = f.read()
-
     content = ''.join(filter(lambda x: x in PRINTABLE, content))
 
     return content
 
 
-def concat_and_save(path: PurePath, source_files: List[PythonFile]):
-    with open(str(path), 'w') as f:
+def concat_and_save(path: str, source_files: List[str]):
+    with open(path, 'w', encoding='utf8') as f:
         for i, source in enumerate(source_files):
-            f.write(f"# PROJECT: {source.project} FILE: {str(source.relative_path)}\n")
-            f.write(read_file(source.path) + "\n")
+            f.write(read_file(source) + "\n")
 
 
 def get_repos_from_readme(file_path='download/pytorch_awesome.md'):
@@ -195,14 +163,13 @@ def main():
     except KeyboardInterrupt:
         pass
     source_files = get_python_files()
-    # np.random.shuffle(source_files)
     logger.debug(f'Source_files size: {len(source_files)}')
-
+    np.random.shuffle(source_files)
     train_valid_split = int(len(source_files) * 0.9)
     train_file = 'download/train.txt'
     valid_file = 'download/valid.txt'
-    concat_and_save(Path(train_file), source_files[:train_valid_split])
-    concat_and_save(Path(valid_file), source_files[train_valid_split:])
+    concat_and_save(train_file, source_files[:train_valid_split])
+    concat_and_save(valid_file, source_files[train_valid_split:])
     logger.info(f'Save train file: {train_file}, valid file: {valid_file}')
 
 

@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     model = GPT2Model(model_name_or_path="gpt2", max_seq_length=128, do_lower_case=False)
     if args.do_train:
-        model.train_model(args.train_file, args.model_dir, eval_file=args.valid_file)
+        model.train_model(args.train_file, args.model_dir, eval_file=args.valid_file, num_epochs=args.num_epochs)
         print(f"model saved to {args.model_dir}")
     if args.do_predict:
         prompts = [
