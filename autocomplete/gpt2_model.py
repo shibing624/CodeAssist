@@ -46,7 +46,7 @@ class GPT2Model:
     def __init__(
             self,
             model_name_or_path: str,
-            max_seq_length: int = 256,
+            max_seq_length: int = 128,
             do_lower_case: bool = False,
             special_words_dict: Dict = None
     ):
@@ -69,8 +69,6 @@ class GPT2Model:
         self.tokenizer = GPT2Tokenizer.from_pretrained(model_name_or_path, do_lower_case=do_lower_case)
         if special_words_dict is not None:
             self.add_special_words(special_words_dict)
-        self.bos_token_id = self.tokenizer.bos_token_id
-        self.eos_token_id = self.tokenizer.eos_token_id
         self.results = {}
 
     def add_special_words(self, special_words_dict):
@@ -85,7 +83,7 @@ class GPT2Model:
             output_dir: str,
             eval_file: str = None,
             verbose: bool = True,
-            batch_size: int = 16,
+            batch_size: int = 8,
             num_epochs: int = 1,
             weight_decay: float = 0.01,
             seed: int = 42,
@@ -138,11 +136,11 @@ class GPT2Model:
 
     def train(
             self,
-            train_dataset,
+            train_dataset: Dataset,
             output_dir: str,
             eval_file: str = None,
             verbose: bool = True,
-            batch_size: int = 16,
+            batch_size: int = 8,
             num_epochs: int = 1,
             weight_decay: float = 0.01,
             seed: int = 42,
@@ -173,7 +171,7 @@ class GPT2Model:
             collate_fn=collate,
         )
 
-        total_steps = int(len(train_dataloader) * num_epochs)
+        total_steps = len(train_dataloader) * num_epochs
         param_optimizer = list(self.model.named_parameters())
         no_decay = ['bias', 'LayerNorm.bias', 'LayerNorm.weight']
         optimizer_grouped_parameters = [
@@ -367,7 +365,8 @@ class GPT2Model:
             num_return_sequences: int = 1,
             length_penalty: float = 2.0,
             early_stopping: bool = True,
-            stop_token: str = None
+            stop_word: str = None,
+            bad_words: list = None,
     ):
         """
         Generate text using a GPT2 LanguageGenerationModel
@@ -379,7 +378,8 @@ class GPT2Model:
         """  # noqa: ignore flake8"
 
         encoded_prompt = self.tokenizer.encode(prompt, return_tensors="pt").to(device)
-
+        # Get tokens of words that should not be generated
+        bad_words_ids = [self.tokenizer(bad_word, add_prefix_space=True).input_ids for bad_word in bad_words] if bad_words else None
         output_sequences = self.model.generate(
             input_ids=encoded_prompt,
             max_length=self.max_seq_length + len(encoded_prompt[0]),
@@ -391,6 +391,10 @@ class GPT2Model:
             num_return_sequences=num_return_sequences,
             length_penalty=length_penalty,
             early_stopping=early_stopping,
+            bad_words_id=bad_words_ids,
+            bos_token_id=self.tokenizer.bos_token_id,
+            pad_token_id=self.tokenizer.eos_token_id,
+            eos_token_id=self.tokenizer.eos_token_id,
         )
 
         # Remove the batch dimension when returning multiple sequences
@@ -403,8 +407,8 @@ class GPT2Model:
             # Decode text
             text = self.tokenizer.decode(generated_sequence, clean_up_tokenization_spaces=True)
 
-            # Remove all text after the stop token
-            text = text[: text.find(stop_token) if stop_token else None]
+            # Remove all text after the stop word token
+            text = text[: text.find(stop_word) if stop_word else None]
 
             # Add the prompt at the beginning of the sequence. Remove the excess text that was used for pre-processing
             total_sequence = prompt + text[len(self.tokenizer.decode(encoded_prompt[0],
