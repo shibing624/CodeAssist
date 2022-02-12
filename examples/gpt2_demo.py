@@ -15,11 +15,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--train_file", type=str, default="download/train.txt", help="Train file path")
     parser.add_argument("--valid_file", type=str, default="download/valid.txt", help="Valid file path")
-    parser.add_argument("--do_train", type=bool, default=True, help="Whether to run training.")
-    parser.add_argument("--do_predict", type=bool, default=True, help="Whether to run predict.")
+    parser.add_argument("--do_train", default=False, action="store_true", help="Whether to run training.")
+    parser.add_argument("--do_predict", default=False, action="store_true", help="Whether to run predict.")
     parser.add_argument("--save_model_dir", type=str, default="outputs/fine-tuned/", help="Model save dir")
     parser.add_argument("--num_epochs", type=int, default=5, help="Num of training epochs")
     args = parser.parse_args()
+    print(args)
 
     prompts = [
         "Despite the recent successes of deep learning, such models are still far from some human abilities like learning from few examples, reasoning and explaining decisions. In this paper, we focus on organ annotation in medical images and we introduce a reasoning framework that is based on learning fuzzy relations on a small dataset for generating explanations.",
