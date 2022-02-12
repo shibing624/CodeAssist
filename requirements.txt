@@ -1,7 +1,8 @@
 loguru
 torch>=1.6.0
 transformers>=4.6.0,<5.0.0
-simpletransformers
 numpy
+pandas
 fastapi
 uvicorn
+tqdm
