@@ -185,7 +185,7 @@ def progressive(limit_size=None):
         if not zip_file:
             continue
         extracted = extract_zip(zip_file)
-        remove_files(extracted, {'.py'})
+        remove_files(extracted, keep={'.py'})
 
 
 def main():
@@ -195,7 +195,7 @@ def main():
     except KeyboardInterrupt:
         pass
     source_files = get_python_files()
-    np.random.shuffle(source_files)
+    # np.random.shuffle(source_files)
     logger.debug(f'Source_files size: {len(source_files)}')
 
     train_valid_split = int(len(source_files) * 0.9)
