@@ -1,34 +1,26 @@
 # -*- coding: utf-8 -*-
 """
 @author:XuMing(xuming624@qq.com)
-@description:
+@description: Rewrite the original gpt2 model to support the autocomplete
 refer: https://github.com/ThilinaRajapakse/simpletransformers/tree/master/simpletransformers/language_modeling
 """
 
-from loguru import logger
-import math
 import os
 from typing import Dict, List
-
+from loguru import logger
+import math
+import random
 import numpy as np
 import pandas as pd
 import torch
-import random
 from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data import DataLoader, Dataset, RandomSampler, SequentialSampler
 from torch.utils.data.distributed import DistributedSampler
 from tqdm.auto import tqdm, trange
-from transformers.optimization import (
-    get_linear_schedule_with_warmup,
-)
-from transformers.optimization import AdamW
-from transformers import (
-    GPT2LMHeadModel,
-    GPT2Tokenizer,
-)
+from transformers.optimization import AdamW, get_linear_schedule_with_warmup
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
 from transformers.data.datasets.language_modeling import TextDataset
 
-pwd_path = os.path.abspath(os.path.dirname(__file__))
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -54,10 +46,11 @@ class GPT2Model:
         Initializes a GPT2 LanguageModelingModel.
     
         Args:
-            model_type: The type of model (gpt2, openai-gpt, bert, roberta, distilbert, camembert)
-            model_name: Default Transformer model name or path to a directory containing Transformer model file (pytorch_nodel.bin).
-            train_files (optional): List of files to be used when training the tokenizer.
-        """  # noqa: ignore flake8"
+            model_name_or_path: Default Transformer model name or path to a directory containing Transformer model file (pytorch_nodel.bin).
+            max_seq_length: The maximum total input sequence length after tokenization.
+            do_lower_case: Set this flag if you are using an uncased model.
+            special_words_dict: A dictionary of special words and their token ids.
+        """
         self.model_name_or_path = model_name_or_path
         self.do_lower_case = do_lower_case
         if max_seq_length > 1024:
@@ -102,11 +95,20 @@ class GPT2Model:
             output_dir: The directory where model files will be saved. If not given, self.args.output_dir will be used.
             eval_file (optional): Path to eval file containing the text to evaluate the language model on.
             verbose (optional): Print logger or not.
-
+            batch_size (optional): Batch size for training.
+            num_epochs (optional): Number of epochs for training.
+            weight_decay (optional): Weight decay for optimization.
+            seed (optional): Seed for initialization.
+            warmup_ratio (optional): Warmup ratio for learning rate.
+            lr (optional): Learning rate.
+            eps (optional): Adam epsilon.
+            gradient_accumulation_steps (optional): Number of updates steps to accumulate before performing a backward/update pass.
+            max_grad_norm (optional): Max gradient norm.
+            max_steps (optional): If > 0: set total number of training steps to perform. Override num_epochs.
         Returns:
             global_step: Number of global steps trained
             training_details: Average training loss if evaluate_during_training is False or full training progress scores if evaluate_during_training is True
-        """  # noqa: ignore flake8"
+        """
         os.makedirs(output_dir, exist_ok=True)
         self.model.to(device)
         train_dataset = TextDataset(self.tokenizer, train_file, self.max_seq_length, overwrite_cache=True,
@@ -287,8 +289,7 @@ class GPT2Model:
         """
         Evaluates the model on eval_df. Saves results to args.output_dir
             result: Dictionary containing evaluation results.
-        """  # noqa: ignore flake8"
-
+        """
         self.model.to(device)
         eval_dataset = TextDataset(self.tokenizer, eval_file, self.max_seq_length, overwrite_cache=True)
         if output_dir:
@@ -344,6 +345,13 @@ class GPT2Model:
         return results
 
     def save_model(self, output_dir, model, results=None):
+        """
+        Saves the model to output_dir.
+        :param output_dir:
+        :param model:
+        :param results:
+        :return:
+        """
         os.makedirs(output_dir, exist_ok=True)
         model_to_save = model.module if hasattr(model, "module") else model
         model_to_save.save_pretrained(output_dir)
@@ -372,14 +380,24 @@ class GPT2Model:
         Generate text using a GPT2 LanguageGenerationModel
 
         Args:
-            prompt: A prompt text for the model. If given, will override args.prompt
+            prompt: A prompt text for the model.
+            temperature: The sampling temperature.
+            top_k: The number of top k tokens to be considered by sampling.
+            top_p: The sampling probability for top p tokens.
+            repetition_penalty: The repetition penalty parameter.
+            do_sample: Boolean value indicating whether to sample or greedy generate.
+            num_return_sequences: The number of samples to return.
+            length_penalty: The length penalty parameter.
+            early_stopping: Boolean value indicating whether to do early stopping or not.
+            stop_word: A stop word to stop generation.
+            bad_words: A list of bad words to be ignored.
         Returns:
             generated_sequences: Sequences of text generated by the model.
-        """  # noqa: ignore flake8"
-
+        """
         encoded_prompt = self.tokenizer.encode(prompt, return_tensors="pt").to(device)
         # Get tokens of words that should not be generated
-        bad_words_ids = [self.tokenizer(bad_word, add_prefix_space=True).input_ids for bad_word in bad_words] if bad_words else None
+        bad_words_ids = [self.tokenizer(bad_word, add_prefix_space=True).input_ids for bad_word in
+                         bad_words] if bad_words else None
         output_sequences = self.model.generate(
             input_ids=encoded_prompt,
             max_length=self.max_seq_length + len(encoded_prompt[0]),
@@ -413,7 +431,6 @@ class GPT2Model:
             # Add the prompt at the beginning of the sequence. Remove the excess text that was used for pre-processing
             total_sequence = prompt + text[len(self.tokenizer.decode(encoded_prompt[0],
                                                                      clean_up_tokenization_spaces=True)):]
-
             generated_sequences.append(total_sequence)
 
         return generated_sequences

@@ -30,4 +30,4 @@ def main(limit_size=10):
 
 
 if __name__ == '__main__':
-    main(limit_size=20)
+    main(limit_size=10)

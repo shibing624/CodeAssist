@@ -17,7 +17,7 @@ if __name__ == '__main__':
     parser.add_argument("--valid_file", type=str, default="download/valid.txt", help="Valid file path")
     parser.add_argument("--do_train", action="store_true", help="Whether to run training.")
     parser.add_argument("--do_predict", action="store_true", help="Whether to run predict.")
-    parser.add_argument("--save_model_dir", type=str, default="outputs/fine-tuned/", help="Model save dir")
+    parser.add_argument("--model_dir", type=str, default="outputs/fine-tuned/", help="Model save dir")
     parser.add_argument("--num_epochs", type=int, default=5, help="Num of training epochs")
     args = parser.parse_args()
     print(args)
@@ -37,12 +37,11 @@ if __name__ == '__main__':
         import torch.nn as""",
         "import java.util.ArrayList;",
     ]
-    predict_with_original_gpt2(prompts)
     if args.do_train:
-        train(model_dir=args.save_model_dir, train_file=args.train_file, valid_file=args.valid_file,
+        train(model_dir=args.model_dir, train_file=args.train_file, valid_file=args.valid_file,
               num_train_epochs=args.num_epochs)
     if args.do_predict:
-        infer = Infer(model_name="gpt2", model_dir=args.save_model_dir, use_cuda=use_cuda)
+        infer = Infer(model_name="gpt2", model_dir=args.model_dir, use_cuda=use_cuda)
         for prompt in prompts:
             res = infer.predict(prompt)
             print("\n\n======================\n\n")
