@@ -15,7 +15,9 @@ from typing import List, NamedTuple, Set
 from typing import Optional
 import numpy as np
 from loguru import logger
+import ssl
 
+ssl._create_default_https_context = ssl._create_unverified_context
 PRINTABLE = set(string.printable)
 
 
