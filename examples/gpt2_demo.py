@@ -17,7 +17,7 @@ if __name__ == '__main__':
     parser.add_argument("--valid_file", type=str, default="download/valid.txt", help="Valid file path")
     parser.add_argument("--do_train", action="store_true", help="Whether to run training.")
     parser.add_argument("--do_predict", action="store_true", help="Whether to run predict.")
-    parser.add_argument("--model_dir", type=str, default="outputs/fine-tuned/", help="Model save dir")
+    parser.add_argument("--model_dir", type=str, default="outputs-fine-tuned/", help="Model save dir")
     parser.add_argument("--num_epochs", type=int, default=5, help="Num of training epochs")
     args = parser.parse_args()
     print(args)

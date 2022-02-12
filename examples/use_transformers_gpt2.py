@@ -6,9 +6,7 @@
 import os
 import torch
 from transformers import GPT2Tokenizer, GPT2LMHeadModel
-import transformers
 
-transformers.logging.set_verbosity_error()
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -40,7 +38,10 @@ for prompt in prompts:
                              do_sample=True,
                              num_return_sequences=1,
                              length_penalty=2.0,
-                             early_stopping=True)
+                             early_stopping=True,
+                             pad_token_id=tokenizer.eos_token_id,
+                             eos_token_id=tokenizer.eos_token_id,
+                             )
     decoded = tokenizer.decode(outputs[0], skip_special_tokens=True)
     print(decoded)
     print("=" * 20)

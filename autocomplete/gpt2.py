@@ -25,7 +25,7 @@ def predict_with_original_gpt2(prompts):
         print("=" * 20)
 
 
-def train(model_dir="outputs/fine-tuned/",
+def train(model_dir="outputs-fine-tuned/",
           train_file="download/train.txt",
           valid_file="download/valid.txt",
           num_train_epochs=3):
@@ -51,7 +51,7 @@ def train(model_dir="outputs/fine-tuned/",
 
 
 class Infer:
-    def __init__(self, model_name="gpt2", model_dir="outputs/fine-tuned", use_cuda=use_cuda, max_length=64):
+    def __init__(self, model_name="gpt2", model_dir="outputs-fine-tuned", use_cuda=use_cuda, max_length=64):
         self.model_name = model_name
         args = {"max_length": max_length, "cache_dir": None}
         # cache_dir: None means use default cache dir: ~/.cache/huggingface/transformers/
@@ -86,8 +86,8 @@ if __name__ == '__main__':
     ]
 
     predict_with_original_gpt2(prompts)
-    train(model_dir="outputs/fine-tuned/", num_train_epochs=3)
-    infer = Infer(model_name="gpt2", model_dir="outputs/fine-tuned", use_cuda=use_cuda)
+    train(model_dir="outputs-fine-tuned/", num_train_epochs=3)
+    infer = Infer(model_name="gpt2", model_dir="outputs-fine-tuned", use_cuda=use_cuda)
     for p in prompts:
         r = infer.predict(p)
         print(r)
