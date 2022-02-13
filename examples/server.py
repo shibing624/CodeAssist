@@ -12,7 +12,7 @@ import torch
 from loguru import logger
 
 sys.path.append('..')
-from autocomplete.gpt2 import Infer
+from autocomplete.gpt2_coder import GPT2Coder
 
 pwd_path = os.path.abspath(os.path.dirname(__file__))
 use_cuda = torch.cuda.is_available()
@@ -21,7 +21,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--model_name_or_path", type=str, default="shibing624/code-autocomplete-gpt2-base",
                     help="Model save dir or model name")
 args = parser.parse_args()
-gpt2_infer = Infer(model_name="gpt2", model_dir=args.model_name_or_path, use_cuda=use_cuda)
+model = GPT2Coder(args.model_name_or_path)
 
 # define the app
 app = FastAPI()
@@ -42,8 +42,8 @@ async def index():
 async def autocomplete(q: str = Query(..., min_length=1, max_length=512, title='query')):
     try:
         # Generate text using the model. Verbose set to False to prevent logging generated sequences.
-        generated = gpt2_infer.predict(q)
-        result_dict = generated
+        generated = model.generate(q)
+        result_dict = generated[0]
         logger.debug(f"Successfully autocomplete, q:{q}, res:{result_dict}")
         return result_dict
     except Exception as e:

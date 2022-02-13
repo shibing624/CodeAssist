@@ -5,3 +5,5 @@
 """
 
 __version__ = "0.0.2"
+
+from autocomplete.gpt2_coder import GPT2Coder

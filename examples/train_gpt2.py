@@ -7,7 +7,7 @@ import argparse
 import sys
 
 sys.path.append('..')
-from autocomplete.gpt2_model import GPT2Model
+from autocomplete import GPT2Coder
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -20,7 +20,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     print(args)
 
-    model = GPT2Model(model_name_or_path="gpt2", max_seq_length=128, do_lower_case=False)
+    model = GPT2Coder(model_name_or_path="gpt2", max_seq_length=128, do_lower_case=False)
     if args.do_train:
         model.train_model(args.train_file, args.model_dir, eval_file=args.valid_file, num_epochs=args.num_epochs)
         print(f"model saved to {args.model_dir}")
@@ -43,7 +43,6 @@ if __name__ == '__main__':
         ]
         for prompt in prompts:
             outputs = model.generate(prompt, bad_words=['#', 'fuck'])
-            print("\n\n======================\n\n")
-            print("Query:", prompt)
-            print("Result:", outputs[0])
-            print("\n\n======================\n\n")
+            print("Input :", prompt)
+            print("Output:", outputs[0])
+            print("=" * 20)

@@ -11,8 +11,7 @@ import urllib.error
 import urllib.request
 import zipfile
 from pathlib import Path
-from pathlib import PurePath
-from typing import List, NamedTuple, Set
+from typing import List, Set
 from typing import Optional
 import numpy as np
 from loguru import logger

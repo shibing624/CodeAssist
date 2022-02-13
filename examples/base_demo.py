@@ -4,12 +4,9 @@
 @description:
 """
 import sys
-import torch
 
 sys.path.append('..')
-from autocomplete.gpt2 import Infer
+from autocomplete.gpt2_coder import GPT2Coder
 
-use_cuda = torch.cuda.is_available()
-m = Infer(model_name="gpt2", model_dir="shibing624/code-autocomplete-gpt2-base", use_cuda=use_cuda)
-i = m.predict('import torch.nn as')
-print(i)
+m = GPT2Coder("shibing624/code-autocomplete-gpt2-base")
+print(m.generate('import torch.nn as')[0])

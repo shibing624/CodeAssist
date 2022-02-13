@@ -9,9 +9,7 @@ import unittest
 import torch
 
 sys.path.append('..')
-from autocomplete.gpt2 import Infer
-
-use_cuda = torch.cuda.is_available()
+from autocomplete.gpt2_coder import GPT2Coder
 
 
 class IssueTestCase(unittest.TestCase):
@@ -30,14 +28,14 @@ class IssueTestCase(unittest.TestCase):
             import torch.nn as""",
             "import java.util.ArrayList;",
         ]
-        infer = Infer(model_name="gpt2", model_dir="shibing624/code-autocomplete-gpt2-base", use_cuda=use_cuda)
+        infer = GPT2Coder("shibing624/code-autocomplete-gpt2-base")
         results = []
         for prompt in prompts:
-            res = infer.predict(prompt)
+            res = infer.generate(prompt)
             print("Query:", prompt)
-            print("Result:", res)
+            print("Result:", res[0])
             print("=" * 20)
-            results.append(res)
+            results.append(res[0])
         self.assertEqual(len(results), 3)
 
 

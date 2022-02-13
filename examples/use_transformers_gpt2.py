@@ -28,9 +28,9 @@ prompts = [
     "def factorial(n):",
 ]
 for prompt in prompts:
-    input_ids = tokenizer.encode(prompt, add_special_tokens=False, return_tensors='pt').to(device)
+    input_ids = tokenizer(prompt, return_tensors='pt').to(device).input_ids
     outputs = model.generate(input_ids=input_ids,
-                             max_length=64 + len(prompt),
+                             max_length=64 + len(input_ids[0]),
                              temperature=1.0,
                              top_k=50,
                              top_p=0.95,
@@ -43,5 +43,6 @@ for prompt in prompts:
                              eos_token_id=tokenizer.eos_token_id,
                              )
     decoded = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    print(decoded)
+    print("Input :", prompt)
+    print("Output:", decoded)
     print("=" * 20)

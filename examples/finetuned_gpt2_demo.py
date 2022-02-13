@@ -24,7 +24,7 @@ if __name__ == '__main__':
         "import java.util.ArrayList;",
     ]
 
-    m = GPT2Coder("gpt2")
+    m = GPT2Coder("shibing624/code-autocomplete-gpt2-base")
     for i in m.generate('import torch.nn as', num_return_sequences=3):
         print(i)
 

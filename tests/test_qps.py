@@ -10,13 +10,13 @@ from time import time
 import torch
 
 sys.path.append('..')
-from autocomplete.gpt2 import Infer
+from autocomplete.gpt2_coder import GPT2Coder
 
 pwd_path = os.path.abspath(os.path.dirname(__file__))
 use_cuda = torch.cuda.is_available()
 
-test_file = os.path.join(pwd_path, '../examples/test.txt')
-model = Infer(model_name="gpt2", model_dir="shibing624/code-autocomplete-gpt2-base", use_cuda=use_cuda)
+test_file = os.path.join(pwd_path, 'test.txt')
+model = GPT2Coder("shibing624/code-autocomplete-gpt2-base")
 
 
 def load_data(file_path):
@@ -35,9 +35,9 @@ class QPSTestCase(unittest.TestCase):
         codes = codes[100:110]
         t1 = time()
         for prompt in codes:
-            res = model.predict(prompt)
+            res = model.generate(prompt)
             print("Query:", prompt)
-            print("Result:", res)
+            print("Result:", res[0])
             print("=" * 20)
         spend_time = time() - t1
         print('spend time:', spend_time, ' seconds')
