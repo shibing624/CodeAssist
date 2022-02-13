@@ -47,7 +47,7 @@ python3 setup.py install
 
 Model upload to HF's model hub: [shibing624/code-autocomplete-gpt2-base](https://huggingface.co/shibing624/code-autocomplete-gpt2-base)
 
-![hf](hf_model.png)
+![hf](docs/hf_model.png)
 
 ### Use with code-autocomplete
 
@@ -156,7 +156,7 @@ python prepare_data.py
 ```
 
 ### Train and predict model
-example:[train_gpt2.py](./examples/train_gpt2.py)
+example: [train_gpt2.py](./examples/train_gpt2.py)
 
 ```shell
 cd examples
@@ -166,7 +166,7 @@ python train_gpt2.py --do_train --do_preidct --num_epochs 15 --model_dir outputs
 ## Server
 start FastAPI server:
 
-example:[server.py](./examples/server.py)
+example: [server.py](./examples/server.py)
 
 ```shell
 cd examples
