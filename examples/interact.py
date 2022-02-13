@@ -12,9 +12,9 @@ from autocomplete.gpt2_coder import GPT2Coder
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Params')
     parser.add_argument('--model_dir', type=str, default="outputs-fine-tuned", help='the path to load fine-tuned model')
-    parser.add_argument('--max_length', type=int, default=128, help='maximum length for code generation')
-    parser.add_argument('--temperature', type=float, default=0.7, help='temperature for sampling-based code generation')
-    parser.add_argument('--num_return_sequences', type=int, default=3, help='number of sequences to be generated')
+    parser.add_argument('--max_length', type=int, default=64, help='maximum length for code generation')
+    parser.add_argument('--temperature', type=float, default=1.0, help='temperature for sampling-based code generation')
+    parser.add_argument('--num_return_sequences', type=int, default=1, help='number of sequences to be generated')
     args = parser.parse_args()
 
     # load fine-tuned model and tokenizer from path specified by --model_dir
@@ -31,5 +31,5 @@ if __name__ == '__main__':
                                          num_return_sequences=args.num_return_sequences)
         print("Generated code:")
         for i, code in enumerate(generated_codes):
-            print("{}. {}".format(i + 1, code))
+            print("{}:\n {}".format(i + 1, code))
         print("=" * 20)
