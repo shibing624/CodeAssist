@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 with open('README.md', 'r', encoding='utf-8') as f:
     readme = f.read()
