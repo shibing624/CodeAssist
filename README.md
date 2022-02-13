@@ -42,16 +42,20 @@ python3 setup.py install
 
 # Usage
 
-### Code Completion
+## Code Completion
 
 
-基于GPT2模型预测补全代码，通过如下命令调用：
 
+
+基于GPT2模型预测补全代码，直接调用：
+
+示例[base_demo.py](./examples/base_demo.py)
 ```python
-from autocomplete.gpt2 import Infer
-m = Infer(model_name="gpt2", model_dir="shibing624/code-autocomplete-gpt2-base", use_cuda=False)
-i = m.predict('import torch.nn as')
-print(i)
+from autocomplete.gpt2_coder import GPT2Coder
+
+m = GPT2Coder("shibing624/code-autocomplete-gpt2-base")
+print(m.generate('import torch.nn as')[0])
+
 ```
 
 output:
@@ -60,9 +64,12 @@ import torch.nn as nn
 ```
 当然，你也可使用官方的huggingface/transformers调用：
 
+示例[use_transformers_gpt2.py](./examples/use_transformers_gpt2.py)
+
 *Please use 'GPT2' related functions to load this model!*
 
 ```python
+
 import os
 import torch
 from transformers import GPT2Tokenizer, GPT2LMHeadModel
@@ -88,9 +95,9 @@ prompts = [
     "def factorial(n):",
 ]
 for prompt in prompts:
-    input_ids = tokenizer.encode(prompt, add_special_tokens=False, return_tensors='pt').to(device)
+    input_ids = tokenizer(prompt, return_tensors='pt').to(device).input_ids
     outputs = model.generate(input_ids=input_ids,
-                             max_length=64 + len(prompt),
+                             max_length=64 + len(input_ids[0]),
                              temperature=1.0,
                              top_k=50,
                              top_p=0.95,
@@ -98,9 +105,13 @@ for prompt in prompts:
                              do_sample=True,
                              num_return_sequences=1,
                              length_penalty=2.0,
-                             early_stopping=True)
+                             early_stopping=True,
+                             pad_token_id=tokenizer.eos_token_id,
+                             eos_token_id=tokenizer.eos_token_id,
+                             )
     decoded = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    print(decoded)
+    print("Input :", prompt)
+    print("Output:", decoded)
     print("=" * 20)
 ```
 
@@ -126,6 +137,44 @@ import torch.nn as nn
 ...
 ```
 
+## Train your own model with Dataset
+### Build dataset from scratch
+This allows to customize dataset building. Below is an example of the building process.
+
+Let's use Python codes from [Awesome-pytorch-list](https://github.com/bharathgs/Awesome-pytorch-list) and [TheAlgorithms/Python](https://github.com/TheAlgorithms/Python) as the dataset. 
+1. We want the model to help auto-complete codes at a general level. The codes of The Algorithms suits the need.
+2. This code from this project is well written (high-quality codes).
+
+Auto download source code and build dataset：
+
+[prepare_data.py](./examples/prepare_data.py)
+
+```shell
+cd examples
+python prepare_data.py
+```
+
+### Train and predict model
+example:[train_gpt2.py](./examples/train_gpt2.py)
+
+```shell
+cd examples
+python train_gpt2.py --do_train --do_preidct --num_epochs 15 --model_dir outputs-fine-tuned
+```
+
+## Server
+start FastAPI server:
+
+example:[server.py](./examples/server.py)
+
+```shell
+cd examples
+python server.py
+```
+
+open url: http://0.0.0.0:8001/docs
+
+![api](./docs/api.png)
 
 # Contact
 
@@ -167,4 +216,5 @@ import torch.nn as nn
 之后即可提交PR。
 
 # Reference
-- [https://github.com/galois-autocompleter/galois-autocompleter](https://github.com/galois-autocompleter/galois-autocompleter)
+- [gpt-2-simple](https://github.com/minimaxir/gpt-2-simple)
+- [galois-autocompleter](https://github.com/galois-autocompleter/galois-autocompleter)

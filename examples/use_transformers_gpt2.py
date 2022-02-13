@@ -3,6 +3,7 @@
 @author:XuMing(xuming624@qq.com)
 @description: 
 """
+
 import os
 import torch
 from transformers import GPT2Tokenizer, GPT2LMHeadModel

@@ -374,7 +374,7 @@ class GPT2Coder:
             num_return_sequences: int = 1,
             length_penalty: float = 2.0,
             early_stopping: bool = True,
-            stop_word: str = None,
+            stop_word: str = "\n\n",
             bad_words: list = None,
             **kwargs
     ):

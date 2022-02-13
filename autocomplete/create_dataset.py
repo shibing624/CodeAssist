@@ -147,6 +147,10 @@ def progressive(limit_size=None):
     if limit_size:
         repos = repos[:limit_size]
     # Download zips
+    # Download TheAlgorithms Python repo
+    zip_file = download_repo("TheAlgorithms", "Python", 0)
+    extract_zip(zip_file)
+    # Download other repos
     for i, r in enumerate(repos):
         zip_file = download_repo(r[0], r[1], i)
         if not zip_file:

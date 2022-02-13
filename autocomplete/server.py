@@ -43,7 +43,7 @@ async def autocomplete(q: str = Query(..., min_length=1, max_length=512, title='
     try:
         # Generate text using the model. Verbose set to False to prevent logging generated sequences.
         generated = model.generate(q)
-        result_dict = generated
+        result_dict = generated[0]
         logger.debug(f"Successfully autocomplete, q:{q}, res:{result_dict}")
         return result_dict
     except Exception as e:
