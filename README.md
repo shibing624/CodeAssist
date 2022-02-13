@@ -9,7 +9,7 @@
 # Code AutoComplete
 code-autocomplete, a code completion plugin for Python.
 
-**code-autocomplete** 实现了Python代码行粒度和块粒度自动补全功能。
+**code-autocomplete** can Automatic completion of code line granularity and block granularity.
 
 
 **Guide**
@@ -45,26 +45,27 @@ python3 setup.py install
 ## Code Completion
 
 
+Model upload to HF's model hub: [shibing624/code-autocomplete-gpt2-base](https://huggingface.co/shibing624/code-autocomplete-gpt2-base)
 
+![hf](hf_model.png)
 
-基于GPT2模型预测补全代码，直接调用：
+### Use with code-autocomplete
 
-示例[base_demo.py](./examples/base_demo.py)
+example: [base_demo.py](./examples/base_demo.py)
 ```python
 from autocomplete.gpt2_coder import GPT2Coder
 
 m = GPT2Coder("shibing624/code-autocomplete-gpt2-base")
 print(m.generate('import torch.nn as')[0])
-
 ```
 
 output:
 ```shell
 import torch.nn as nn
 ```
-当然，你也可使用官方的huggingface/transformers调用：
+### Use with huggingface/transformers：
 
-示例[use_transformers_gpt2.py](./examples/use_transformers_gpt2.py)
+example: [use_transformers_gpt2.py](./examples/use_transformers_gpt2.py)
 
 *Please use 'GPT2' related functions to load this model!*
 
@@ -159,7 +160,7 @@ example:[train_gpt2.py](./examples/train_gpt2.py)
 
 ```shell
 cd examples
-python train_gpt2.py --do_train --do_preidct --num_epochs 15 --model_dir outputs-fine-tuned
+python train_gpt2.py --do_train --do_preidct --num_epochs 15 --model_dir outputs-fine-tuned --model_name gpt2
 ```
 
 ## Server

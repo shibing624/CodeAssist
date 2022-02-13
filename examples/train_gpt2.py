@@ -11,6 +11,7 @@ from autocomplete import GPT2Coder
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument("--model_name", type=str, default="gpt2", help="Model arch, gpt2, gpt2-medium or distilgpt2")
     parser.add_argument("--train_file", type=str, default="download/train.txt", help="Train file path")
     parser.add_argument("--valid_file", type=str, default="download/valid.txt", help="Valid file path")
     parser.add_argument("--do_train", action="store_true", help="Whether to run training.")
@@ -21,7 +22,7 @@ if __name__ == '__main__':
     print(args)
 
     if args.do_train:
-        model = GPT2Coder(model_name_or_path="gpt2", max_seq_length=128, do_lower_case=False)
+        model = GPT2Coder(model_name_or_path=args.model_name, max_seq_length=128, do_lower_case=False)
         model.train_model(args.train_file, args.model_dir, eval_file=args.valid_file, num_epochs=args.num_epochs)
         print(f"model saved to {args.model_dir}")
     if args.do_predict:
