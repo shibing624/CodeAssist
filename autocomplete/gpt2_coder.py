@@ -131,8 +131,6 @@ class GPT2Coder:
             max_grad_norm=max_grad_norm,
             max_steps=max_steps
         )
-
-        self.save_model(output_dir, model=self.model)
         logger.info(f" Training of GPT2 model complete. Saved to {output_dir}.")
 
         return global_step, training_details
