@@ -366,6 +366,7 @@ class GPT2Coder:
     def generate(
             self,
             prompt: str,
+            is_add_prompt: bool = True,
             temperature: int = 1.0,
             top_k: int = 50,
             top_p: float = 0.95,
@@ -383,6 +384,7 @@ class GPT2Coder:
 
         Args:
             prompt: A prompt text for the model.
+            is_add_prompt: Whether to add the prompt to the returned text.
             temperature: The sampling temperature.
             top_k: The number of top k tokens to be considered by sampling.
             top_p: The sampling probability for top p tokens.
@@ -432,6 +434,9 @@ class GPT2Coder:
             text = text[: text.find(stop_word) if stop_word else None]
             # Remove the excess text that was used for pre-processing
             total_sequence = text[len(self.tokenizer.decode(encoded_prompt_ids[0], clean_up_tokenization_spaces=True)):]
+            # Add the prompt at the beginning of the sequence.
+            if is_add_prompt:
+                total_sequence = prompt + total_sequence
             generated_sequences.append(total_sequence)
 
         return generated_sequences
