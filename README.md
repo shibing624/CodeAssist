@@ -9,7 +9,7 @@
 # Code AutoComplete
 code-autocomplete, a code completion plugin for Python.
 
-**code-autocomplete** can Automatic completion of code line granularity and block granularity.
+**code-autocomplete** can automatically complete the code of lines and blocks with GPT2.
 
 
 **Guide**
