@@ -60,7 +60,7 @@ class GPT2Coder:
         self.model = GPT2LMHeadModel.from_pretrained(model_name_or_path)
         self.model.to(device)
         self.tokenizer = GPT2Tokenizer.from_pretrained(model_name_or_path, do_lower_case=do_lower_case)
-        # default transformers cache dir: ~/.cache/huggingface/transformers/
+        # When download from transformers, cache dir: ~/.cache/huggingface/transformers/
         if special_words_dict is not None:
             self.add_special_words(special_words_dict)
         self.results = {}

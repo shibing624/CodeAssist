@@ -20,11 +20,12 @@ if __name__ == '__main__':
     args = parser.parse_args()
     print(args)
 
-    model = GPT2Coder(model_name_or_path="gpt2", max_seq_length=128, do_lower_case=False)
     if args.do_train:
+        model = GPT2Coder(model_name_or_path="gpt2", max_seq_length=128, do_lower_case=False)
         model.train_model(args.train_file, args.model_dir, eval_file=args.valid_file, num_epochs=args.num_epochs)
         print(f"model saved to {args.model_dir}")
     if args.do_predict:
+        model = GPT2Coder(model_name_or_path=args.model_dir, max_seq_length=128, do_lower_case=False)
         prompts = [
             "Despite the recent successes of deep learning, such models are still far from some human abilities like learning from few examples, reasoning and explaining decisions. In this paper, we focus on organ annotation in medical images and we introduce a reasoning framework that is based on learning fuzzy relations on a small dataset for generating explanations.",
             "There is a growing interest and literature on intrinsic motivations and open-ended learning in both cognitive robotics and machine learning on one side, ",
