@@ -160,7 +160,7 @@ example: [train_gpt2.py](./examples/train_gpt2.py)
 
 ```shell
 cd examples
-python train_gpt2.py --do_train --do_preidct --num_epochs 15 --model_dir outputs-fine-tuned --model_name gpt2
+python train_gpt2.py --do_train --do_predict --num_epochs 15 --model_dir outputs-fine-tuned --model_name gpt2
 ```
 
 ## Server
