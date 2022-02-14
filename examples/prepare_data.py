@@ -3,6 +3,7 @@
 @author:XuMing(xuming624@qq.com)
 @description: 
 """
+import argparse
 import numpy as np
 import sys
 
@@ -10,10 +11,15 @@ sys.path.append("..")
 from autocomplete import create_dataset
 
 
-def main(limit_size=10):
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--num_repos", type=int, default=10, help="Number of repos to use")
+    args = parser.parse_args()
+    print(args)
+
     create_dataset.create_folders()
     try:
-        create_dataset.progressive(limit_size=limit_size)
+        create_dataset.progressive(limit_size=args.num_repos)
     except KeyboardInterrupt:
         pass
     source_files = create_dataset.get_python_files()
@@ -28,4 +34,4 @@ def main(limit_size=10):
 
 
 if __name__ == '__main__':
-    main(limit_size=10)
+    main()

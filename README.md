@@ -139,20 +139,37 @@ import torch.nn as nn
 ```
 
 ## Train your own model with Dataset
-### Build dataset from scratch
+### Build dataset
 This allows to customize dataset building. Below is an example of the building process.
 
 Let's use Python codes from [Awesome-pytorch-list](https://github.com/bharathgs/Awesome-pytorch-list) and [TheAlgorithms/Python](https://github.com/TheAlgorithms/Python) as the dataset. 
 1. We want the model to help auto-complete codes at a general level. The codes of The Algorithms suits the need.
 2. This code from this project is well written (high-quality codes).
 
-Auto download source code and build dataset：
+dataset tree:
+```shell
+examples/download
+├── train.txt
+└── valid.txt
+```
+
+There are tow ways to build dataset:
+
+1. Download dataset from Cloud:
+
+| Name | Source | Download | Size |
+| :------- | :--------- | :---------: | :---------: |
+**`Python Source Code Data`** | Awesome-pytorch-list(5.22 Million lines) | [code-download.zip(key:tda5)](https://pan.baidu.com/s/1gVsmR195t-8uKlFpdokhgw)| 43M |
+
+download dataset and unzip it, put to `examples/`.
+
+2. Get source code from scratch and build dataset:
 
 [prepare_data.py](./examples/prepare_data.py)
 
 ```shell
 cd examples
-python prepare_data.py
+python prepare_data.py --num_repos 260
 ```
 
 ### Train and predict model
