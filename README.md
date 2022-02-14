@@ -159,7 +159,7 @@ There are tow ways to build dataset:
 
 | Name | Source | Download | Size |
 | :------- | :--------- | :---------: | :---------: |
-python-source-code | Awesome-pytorch-list(5.22 Million lines) | [Baidu Disk(key:tda5)](https://pan.baidu.com/s/1gVsmR195t-8uKlFpdokhgw) <br/> [github](https://github.com/shibing624/code-autocomplete/releases/download/0.0.3/download.zip) | 41M |
+python-source-code | Awesome-pytorch-list(5.22 Million lines) | [Baidu Disk(key:tda5)](https://pan.baidu.com/s/1gVsmR195t-8uKlFpdokhgw) <br/> [github](https://github.com/shibing624/code-autocomplete/releases/download/0.0.3/download.zip) <br/> [HF datasets](https://huggingface.co/datasets/shibing624/python-source-code/blob/main/download.zip)| 41M |
 
 download dataset and unzip it, put to `examples/`.
 
