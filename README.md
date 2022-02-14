@@ -159,7 +159,7 @@ There are tow ways to build dataset:
 
 | Name | Source | Download | Size |
 | :------- | :--------- | :---------: | :---------: |
-**`Python Source Code Data`** | Awesome-pytorch-list(5.22 Million lines) | [code-download.zip(key:tda5)](https://pan.baidu.com/s/1gVsmR195t-8uKlFpdokhgw)| 43M |
+python-source-code | Awesome-pytorch-list(5.22 Million lines) | [download.zip(key:tda5)](https://pan.baidu.com/s/1gVsmR195t-8uKlFpdokhgw)| 43M |
 
 download dataset and unzip it, put to `examples/`.
 
