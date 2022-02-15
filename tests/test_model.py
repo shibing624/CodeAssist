@@ -3,6 +3,8 @@
 @author:XuMing(xuming624@qq.com)
 @description: 
 """
+
+import argparse
 import os
 import sys
 import unittest
@@ -14,7 +16,14 @@ from autocomplete.gpt2_coder import GPT2Coder
 pwd_path = os.path.abspath(os.path.dirname(__file__))
 
 test_file = os.path.join(pwd_path, 'test.txt')
-model = GPT2Coder("shibing624/code-autocomplete-gpt2-base")
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--model_dir", type=str, default="shibing624/code-autocomplete-gpt2-base",
+                    help="Model directory to export parameters from.")
+args = parser.parse_args()
+print(args)
+
+model = GPT2Coder(args.model_name)
 
 
 def load_data(file_path):
@@ -26,9 +35,9 @@ def load_data(file_path):
     return res
 
 
-class QPSTestCase(unittest.TestCase):
-    def test_code_infer_speed(self):
-        """Test code_infer_speed"""
+class ModelTestCase(unittest.TestCase):
+    def test_model_infer(self):
+        """test_model_infer"""
         codes = load_data(test_file)
         codes = codes[100:110]
         t1 = time()

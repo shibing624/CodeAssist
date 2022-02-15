@@ -131,7 +131,7 @@ class GPT2Coder:
             max_grad_norm=max_grad_norm,
             max_steps=max_steps
         )
-        logger.info(f" Training of GPT2 model complete. Saved to {output_dir}.")
+        logger.info(f" Training model done. Saved to {output_dir}.")
 
         return global_step, training_details
 
@@ -196,7 +196,7 @@ class GPT2Coder:
         tr_loss, logging_loss = 0.0, 0.0
         self.model.zero_grad()
         epoch_number = 0
-        best_eval_metric = 0
+        best_eval_metric = 1e3
         steps_trained_in_current_epoch = 0
         epochs_trained = 0
 
@@ -264,7 +264,6 @@ class GPT2Coder:
                     global_step += 1
             epoch_number += 1
             output_dir_current = os.path.join(output_dir, "checkpoint-{}-epoch-{}".format(global_step, epoch_number))
-            os.makedirs(output_dir_current, exist_ok=True)
             results = self.eval_model(eval_file, output_dir_current, verbose=verbose, batch_size=batch_size)
             self.save_model(output_dir_current, model=self.model, results=results)
             training_progress_scores["global_step"].append(global_step)
@@ -275,7 +274,7 @@ class GPT2Coder:
             report.to_csv(os.path.join(output_dir, "training_progress_scores.csv"), index=False)
 
             eval_loss = results["eval_loss"]
-            if best_eval_metric < eval_loss:
+            if eval_loss < best_eval_metric:
                 best_eval_metric = eval_loss
                 self.save_model(output_dir, model=self.model, results=results)
 
@@ -291,8 +290,6 @@ class GPT2Coder:
         """
         self.model.to(device)
         eval_dataset = TextDataset(self.tokenizer, eval_file, self.max_seq_length, overwrite_cache=True)
-        if output_dir:
-            os.makedirs(output_dir, exist_ok=True)
         result = self.evaluate(eval_dataset, output_dir, batch_size=batch_size)
         self.results.update(result)
 
@@ -337,6 +334,7 @@ class GPT2Coder:
         results["eval_loss"] = eval_loss
         results["perplexity"] = perplexity
         if output_dir:
+            os.makedirs(output_dir, exist_ok=True)
             with open(os.path.join(output_dir, "eval_results.txt"), "w") as writer:
                 for key in sorted(results.keys()):
                     writer.write("{} = {}\n".format(key, str(results[key])))
@@ -351,6 +349,7 @@ class GPT2Coder:
         :param results:
         :return:
         """
+        logger.info("Saving model checkpoint to %s", output_dir)
         os.makedirs(output_dir, exist_ok=True)
         model_to_save = model.module if hasattr(model, "module") else model
         model_to_save.save_pretrained(output_dir)
