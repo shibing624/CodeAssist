@@ -27,6 +27,10 @@ code-autocomplete, a code completion plugin for Python.
 - Code completion for Python, other language is coming soon
 - Line and block code completion
 - Train(Fine-tune GPT2) and predict model with your own data
+# Demo
+
+
+HuggingFace Demo: https://huggingface.co/spaces/shibing624/code-autocomplete
 
 # Install
 
