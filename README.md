@@ -45,9 +45,13 @@ python3 setup.py install
 ## Code Completion
 
 
-Model upload to HF's model hub: [shibing624/code-autocomplete-gpt2-base](https://huggingface.co/shibing624/code-autocomplete-gpt2-base)
+Model upload to HF's model hub: 
+
+- DistilGPT2-python: [shibing624/code-autocomplete-distilgpt2-python](https://huggingface.co/shibing624/code-autocomplete-distilgpt2-python) (fine-tuned distilgpt2, model size: 319MB)
+- GPT2-python: [shibing624/code-autocomplete-gpt2-base](https://huggingface.co/shibing624/code-autocomplete-gpt2-base) (fine-tuned gpt2, model size: 487MB)
 
 ![hf](docs/hf_model.png)
+
 
 ### Use with code-autocomplete
 
@@ -62,6 +66,7 @@ print(m.generate('import torch.nn as')[0])
 output:
 ```shell
 import torch.nn as nn
+import torch.nn.functional as F
 ```
 ### Use with huggingface/transformers：
 
@@ -72,15 +77,11 @@ example: [use_transformers_gpt2.py](./examples/use_transformers_gpt2.py)
 ```python
 
 import os
-import torch
 from transformers import GPT2Tokenizer, GPT2LMHeadModel
-
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 tokenizer = GPT2Tokenizer.from_pretrained("shibing624/code-autocomplete-gpt2-base")
 model = GPT2LMHeadModel.from_pretrained("shibing624/code-autocomplete-gpt2-base")
-model.to(device)
 prompts = [
     """from torch import nn
     class LSTM(Module):
@@ -96,7 +97,7 @@ prompts = [
     "def factorial(n):",
 ]
 for prompt in prompts:
-    input_ids = tokenizer(prompt, return_tensors='pt').to(device).input_ids
+    input_ids = tokenizer(prompt, return_tensors='pt').input_ids
     outputs = model.generate(input_ids=input_ids,
                              max_length=64 + len(input_ids[0]),
                              temperature=1.0,
@@ -117,7 +118,7 @@ for prompt in prompts:
 ```
 
 output:
-```python
+```shell
 from torch import nn
 class LSTM(Module):
     def __init__(self, *,

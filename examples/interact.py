@@ -21,7 +21,6 @@ if __name__ == '__main__':
     model = GPT2Coder(args.model_dir, args.max_length)
 
     # generate code
-    context = ""
     while True:
         print(f'Enter the context code (exit or python code)')
         context = input(">>> ")
