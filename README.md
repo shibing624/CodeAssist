@@ -63,6 +63,19 @@ m = GPT2Coder("shibing624/code-autocomplete-gpt2-base")
 print(m.generate('import torch.nn as')[0])
 ```
 
+distilgpt2 fine-tuned code autocomplete model, you can use the following code:
+
+example: [distilgpt2_demo.py](./examples/distilgpt2_demo.py)
+
+```python
+import sys
+
+sys.path.append('..')
+from autocomplete.gpt2_coder import GPT2Coder
+
+m = GPT2Coder("shibing624/code-autocomplete-distilgpt2-python")
+print(m.generate('import torch.nn as')[0])
+```
 output:
 ```shell
 import torch.nn as nn
