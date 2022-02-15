@@ -15,18 +15,11 @@ tokenizer = GPT2Tokenizer.from_pretrained("shibing624/code-autocomplete-gpt2-bas
 model = GPT2LMHeadModel.from_pretrained("shibing624/code-autocomplete-gpt2-base")
 model.to(device)
 prompts = [
-    """from torch import nn
-    class LSTM(Module):
-        def __init__(self, *,
-                     n_tokens: int,
-                     embedding_size: int,
-                     hidden_size: int,
-                     n_layers: int):""",
-    """import numpy as np
-    import torch
-    import torch.nn as""",
-    "import java.util.ArrayList;",
-    "def factorial(n):",
+    "import numpy as np",
+    "import torch.nn as",
+    'parser.add_argument("--num_train_epochs",',
+    "def set_seed(",
+    "def factorial",
 ]
 for prompt in prompts:
     input_ids = tokenizer(prompt, return_tensors='pt').to(device).input_ids

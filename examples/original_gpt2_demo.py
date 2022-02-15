@@ -11,17 +11,11 @@ from autocomplete.gpt2_coder import GPT2Coder
 
 if __name__ == '__main__':
     prompts = [
-        """from torch import nn
-        class LSTM(Module):
-            def __init__(self, *,
-                         n_tokens: int,
-                         embedding_size: int,
-                         hidden_size: int,
-                         n_layers: int):""",
-        """import numpy as np
-        import torch
-        import torch.nn as""",
-        "import java.util.ArrayList;",
+        "import numpy as np",
+        "import torch.nn as",
+        'parser.add_argument("--num_train_epochs",',
+        "def set_seed(",
+        "def factorial",
     ]
 
     m = GPT2Coder("gpt2")
