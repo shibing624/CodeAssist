@@ -27,6 +27,8 @@ code-autocomplete, a code completion plugin for Python.
 - Code completion for Python, other language is coming soon
 - Line and block code completion
 - Train(Fine-tune GPT2) and predict model with your own data
+
+
 # Demo
 
 
@@ -226,14 +228,13 @@ open url: http://0.0.0.0:8001/docs
 
 ```latex
 @misc{code-autocomplete,
-  author = {Xu Ming},
-  title = {code-autocomplete: Code AutoComplete with GPT2 model},
-  year = {2022},
-  publisher = {GitHub},
-  journal = {GitHub repository},
-  url = {https://github.com/shibing624/code-autocomplete},
+  title={code-autocomplete: Code AutoComplete with GPT2 model},
+  author={Ming Xu},
+  howpublished={https://github.com/shibing624/code-autocomplete},
+  year={2022}
 }
 ```
+
 
 # License
 
