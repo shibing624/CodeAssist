@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Xu"
+  given-names: "Ming"
+title: "code-autocomplete: Code AutoComplete with GPT2 model"
+url: "https://github.com/shibing624/code-autocomplete"
+data-released: 2022-02-15
+version: 0.0.3
