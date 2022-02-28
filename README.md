@@ -226,15 +226,20 @@ open url: http://0.0.0.0:8001/docs
 
 如果你在研究中使用了code-autocomplete，请按如下格式引用：
 
+APA:
 ```latex
-@misc{code-autocomplete,
-  title={code-autocomplete: Code AutoComplete with GPT2 model},
-  author={Ming Xu},
-  howpublished={https://github.com/shibing624/code-autocomplete},
-  year={2022}
-}
+Xu, M. code-autocomplete: Code AutoComplete with GPT2 model (Version 0.0.3) [Computer software]. https://github.com/shibing624/code-autocomplete
 ```
 
+BibTeX:
+```latex
+@software{Xu_code-autocomplete_Code_AutoComplete,
+author = {Xu, Ming},
+title = {{code-autocomplete: Code AutoComplete with GPT2 model}},
+url = {https://github.com/shibing624/code-autocomplete},
+version = {0.0.3}
+}
+```
 
 # License
 
