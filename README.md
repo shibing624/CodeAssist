@@ -37,6 +37,7 @@ HuggingFace Demo: https://huggingface.co/spaces/shibing624/code-autocomplete
 # Install
 
 ```
+pip3 install torch # conda install pytorch
 pip3 install -U code-autocomplete
 ```
 

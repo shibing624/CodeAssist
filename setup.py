@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 
 with open('README.md', 'r', encoding='utf-8') as f:
     readme = f.read()
-
-with open('requirements.txt', 'r', encoding='utf-8') as f:
-    reqs = f.read()
 
 setup(
     name='code-autocomplete',
@@ -33,9 +30,13 @@ setup(
         'Topic :: Text Processing :: Linguistic',
     ],
     keywords='autocomplete,code-autocomplete',
-    install_requires=reqs.strip().split('\n'),
+    install_requires=[
+        "loguru",
+        "transformers>=4.6.0",
+        "pandas",
+        "tqdm",
+    ],
     packages=find_packages(exclude=['tests']),
     package_dir={'autocomplete': 'autocomplete'},
-    package_data={'autocomplete': ['*.*', '../LICENSE', '../README.*', '../*.txt', 'utils/*',
-                                   'data/*', ]}
+    package_data={'autocomplete': ['*.*', 'utils/*']}
 )
