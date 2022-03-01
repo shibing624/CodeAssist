@@ -18,7 +18,7 @@ CPP_HOME = "https://github.com/fffaraz/awesome-cpp"
 
 _CITATION = "https://github.com/shibing624/code-autocomplete"
 
-_DATA_URL = "https://huggingface.co/datasets/shibing624/python-source-code/resolve/main/download.zip"
+_DATA_URL = "https://github.com/shibing624/code-autocomplete/releases/download/0.0.4/source_code.zip"
 
 
 class SourceCodeConfig(datasets.BuilderConfig):
@@ -48,7 +48,7 @@ class SourceCode(datasets.GeneratorBasedBuilder):
         SourceCodeConfig(
             name="python",
             description=_DESCRIPTION,
-            features=["code"],
+            features=["text"],
             data_url=_DATA_URL,
             citation=_CITATION,
             url=PYTHON_HOME,
@@ -56,7 +56,7 @@ class SourceCode(datasets.GeneratorBasedBuilder):
         SourceCodeConfig(
             name="java",
             description=_DESCRIPTION,
-            features=["code"],
+            features=["text"],
             data_url=_DATA_URL,
             citation=_CITATION,
             url=JAVA_HOME,
@@ -64,7 +64,7 @@ class SourceCode(datasets.GeneratorBasedBuilder):
         SourceCodeConfig(
             name="cpp",
             description=_DESCRIPTION,
-            features=["code"],
+            features=["text"],
             data_url=_DATA_URL,
             citation=_CITATION,
             url=CPP_HOME,
@@ -85,7 +85,7 @@ class SourceCode(datasets.GeneratorBasedBuilder):
 
     def _split_generators(self, dl_manager):
         dl_dir = dl_manager.download_and_extract(self.config.data_url) or ""
-        dl_dir = os.path.join(dl_dir, f"download/{self.config.name}")
+        dl_dir = os.path.join(dl_dir, f"source_code/{self.config.name}")
         return [
             datasets.SplitGenerator(
                 name=datasets.Split.TRAIN,
@@ -99,12 +99,12 @@ class SourceCode(datasets.GeneratorBasedBuilder):
                     "filepath": os.path.join(dl_dir, f"valid.txt"),
                 },
             ),
-            # datasets.SplitGenerator(
-            #     name=datasets.Split.TEST,
-            #     gen_kwargs={
-            #         "filepath": os.path.join(dl_dir, f"test.txt"),
-            #     },
-            # ),
+            datasets.SplitGenerator(
+                name=datasets.Split.TEST,
+                gen_kwargs={
+                    "filepath": os.path.join(dl_dir, f"test.txt"),
+                },
+            ),
         ]
 
     def _generate_examples(self, filepath):

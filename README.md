@@ -158,7 +158,6 @@ def factorial(n: int) -> int:
 This allows to customize dataset building. Below is an example of the building process.
 
 Let's use Python codes from [Awesome-pytorch-list](https://github.com/bharathgs/Awesome-pytorch-list)
-and [TheAlgorithms/Python](https://github.com/TheAlgorithms/Python) as the dataset.
 
 1. We want the model to help auto-complete codes at a general level. The codes of The Algorithms suits the need.
 2. This code from this project is well written (high-quality codes).
@@ -166,22 +165,64 @@ and [TheAlgorithms/Python](https://github.com/TheAlgorithms/Python) as the datas
 dataset tree:
 
 ```shell
-examples/download
+examples/download/python
 ├── train.txt
 └── valid.txt
+└── test.txt
 ```
 
-There are two ways to build dataset:
+There are three ways to build dataset:
+1. Use the huggingface/datasets library load the dataset
+huggingface datasets [https://huggingface.co/datasets/shibing624/source_code](https://huggingface.co/datasets/shibing624/source_code)
 
-1. Download dataset from Cloud:
+```shell
+pip3 install datasets
+```
+
+```python
+from datasets import load_dataset
+dataset = load_dataset("shibing624/source_code", "python") # python or java or cpp
+print(dataset)
+print(dataset['test'][0:10])
+```
+
+output:
+```shell
+DatasetDict({
+    train: Dataset({
+        features: ['text'],
+        num_rows: 5215412
+    })
+    validation: Dataset({
+        features: ['text'],
+        num_rows: 10000
+    })
+    test: Dataset({
+        features: ['text'],
+        num_rows: 10000
+    })
+})
+{'text': [
+"            {'max_epochs': [1, 2]},\n", 
+'            refit=False,\n', '            cv=3,\n', 
+"            scoring='roc_auc',\n", '        )\n', 
+'        search.fit(*data)\n', 
+'', 
+'    def test_module_output_not_1d(self, net_cls, data):\n', 
+'        from skorch.toy import make_classifier\n', 
+'        module = make_classifier(\n'
+]}
+```
+
+2. Download dataset from Cloud
 
 | Name | Source | Download | Size |
 | :------- | :--------- | :---------: | :---------: |
-python-source-code | Awesome-pytorch-list(5.22 Million lines) | [Baidu Disk(key:tda5)](https://pan.baidu.com/s/1gVsmR195t-8uKlFpdokhgw) <br/> [github](https://github.com/shibing624/code-autocomplete/releases/download/0.0.3/download.zip) <br/> [HF datasets](https://huggingface.co/datasets/shibing624/python-source-code/blob/main/download.zip)| 41M |
+| Python+Java+CPP source code | Awesome-pytorch-list(5.22 Million lines) | [github_source_code.zip](https://github.com/shibing624/code-autocomplete/releases/download/0.0.4/source_code.zip) | 105M |
 
 download dataset and unzip it, put to `examples/`.
 
-2. Get source code from scratch and build dataset:
+3. Get source code from scratch and build dataset
 
 [prepare_data.py](./examples/prepare_data.py)
 
@@ -229,16 +270,16 @@ open url: http://0.0.0.0:8001/docs
 
 APA:
 ```latex
-Xu, M. code-autocomplete: Code AutoComplete with GPT2 model (Version 0.0.3) [Computer software]. https://github.com/shibing624/code-autocomplete
+Xu, M. code-autocomplete: Code AutoComplete with GPT2 model (Version 0.0.4) [Computer software]. https://github.com/shibing624/code-autocomplete
 ```
 
 BibTeX:
 ```latex
 @software{Xu_code-autocomplete_Code_AutoComplete,
 author = {Xu, Ming},
-title = {{code-autocomplete: Code AutoComplete with GPT2 model}},
+title = {code-autocomplete: Code AutoComplete with GPT2 model},
 url = {https://github.com/shibing624/code-autocomplete},
-version = {0.0.3}
+version = {0.0.4}
 }
 ```
 
