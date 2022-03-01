@@ -4,33 +4,40 @@
 @description: 
 """
 import argparse
-import numpy as np
 import sys
 
 sys.path.append("..")
 from autocomplete import create_dataset
+from sklearn.model_selection import train_test_split
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--num_repos", type=int, default=10, help="Number of repos to use")
+    parser.add_argument("--save_dir", type=str, default="download", help="Save dataset directory")
+    parser.add_argument("--num_repos", type=int, default=3, help="Number of repos to use")
+    parser.add_argument("--code", default="python", const='python', nargs='?',
+                        choices=['python', 'java', 'cpp'], help="Download code language source code dataset")
     args = parser.parse_args()
     print(args)
 
-    create_dataset.create_folders()
     try:
-        create_dataset.progressive(limit_size=args.num_repos)
+        sources = create_dataset.get_source_code_by_language(code_languages=args.code,
+                                                             save_dir=args.save_dir,
+                                                             each_limit_repos=args.num_repos
+                                                             )
     except KeyboardInterrupt:
+        sources = dict()
         pass
-    source_files = create_dataset.get_python_files()
-    print(f'Source_files size: {len(source_files)}')
-    np.random.shuffle(source_files)
-    train_valid_split = int(len(source_files) * 0.9)
-    train_file = 'download/train.txt'
-    valid_file = 'download/valid.txt'
-    create_dataset.concat_and_save(train_file, source_files[:train_valid_split])
-    create_dataset.concat_and_save(valid_file, source_files[train_valid_split:])
-    print(f'Save train file: {train_file}, valid file: {valid_file}')
+    X = sources[f"{args.code}"]
+    X_train, X_test = train_test_split(X, test_size=0.2, random_state=1)
+    X_train, X_val = train_test_split(X_train, test_size=0.25, random_state=1)  # 0.25 x 0.8 = 0.2
+    train_file = f'{args.save_dir}/{args.code}/train.txt'
+    valid_file = f'{args.save_dir}/{args.code}/valid.txt'
+    test_file = f'{args.save_dir}/{args.code}/test.txt'
+    create_dataset.merge_and_save(X_train, train_file)
+    create_dataset.merge_and_save(X_val, valid_file)
+    create_dataset.merge_and_save(X_test, test_file)
+    print(f'Save train file: {train_file}, valid file: {valid_file}, test file: {test_file}')
 
 
 if __name__ == '__main__':

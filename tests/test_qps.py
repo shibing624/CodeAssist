@@ -23,6 +23,8 @@ def load_data(file_path):
         for line in f:
             line = line.strip()
             res.append(line)
+            if len(res) >= 200:
+                break
     return res
 
 
