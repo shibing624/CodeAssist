@@ -5,5 +5,5 @@ authors:
   given-names: "Ming"
 title: "code-autocomplete: Code AutoComplete with GPT2 model"
 url: "https://github.com/shibing624/code-autocomplete"
-data-released: 2022-02-15
-version: 0.0.3
+data-released: 2022-03-01
+version: 0.0.4
