@@ -34,7 +34,6 @@ setup(
         "loguru",
         "transformers>=4.6.0",
         "pandas",
-        "tqdm",
     ],
     packages=find_packages(exclude=['tests']),
     package_dir={'autocomplete': 'autocomplete'},

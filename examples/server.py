@@ -1,6 +1,6 @@
 """
 @author:XuMing(xuming624@qq.com)
-@description: Server
+@description: pip install fastapi uvicorn
 """
 import argparse
 import uvicorn
