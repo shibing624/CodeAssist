@@ -19,14 +19,13 @@ def main():
                         choices=['python', 'java', 'cpp'], help="Download code language source code dataset")
     args = parser.parse_args()
     print(args)
-
+    sources = dict()
     try:
         sources = create_dataset.get_source_code_by_language(code_languages=args.code,
                                                              save_dir=args.save_dir,
                                                              each_limit_repos=args.num_repos
                                                              )
     except KeyboardInterrupt:
-        sources = dict()
         pass
     X = sources[f"{args.code}"]
     X_train, X_test = train_test_split(X, test_size=0.2, random_state=1)
