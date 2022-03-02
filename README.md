@@ -240,6 +240,9 @@ cd examples
 python train_gpt2.py --do_train --do_predict --num_epochs 15 --model_dir outputs-fine-tuned --model_name gpt2
 ```
 
+PS: fine-tuned result model is GPT2-python: [shibing624/code-autocomplete-gpt2-base](https://huggingface.co/shibing624/code-autocomplete-gpt2-base), 
+i spent about 24 hours with V100 to fine-tune it. 
+
 ## Server
 
 start FastAPI server:
