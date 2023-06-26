@@ -61,7 +61,7 @@ Model upload to HF's model hub:
 
 ![hf](docs/hf_model.png)
 
-### Use with codeassist
+### Use with CodeAssist
 
 example: [base_demo.py](./examples/base_demo.py)
 
