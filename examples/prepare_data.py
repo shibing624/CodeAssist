@@ -9,7 +9,7 @@ import sys
 from sklearn.model_selection import train_test_split
 
 sys.path.append("..")
-from autocoder import create_dataset
+from codeassist import create_dataset
 
 
 def main():

@@ -7,7 +7,7 @@ import argparse
 import sys
 
 sys.path.append('..')
-from autocoder.gpt2_coder import GPT2Coder
+from codeassist.gpt2_coder import GPT2Coder
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Params')

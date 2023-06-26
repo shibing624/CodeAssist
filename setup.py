@@ -7,7 +7,7 @@ with open('README.md', 'r', encoding='utf-8') as f:
     readme = f.read()
 
 setup(
-    name='autocoder',
+    name='codeassist',
     version=__version__,
     description='Code AutoComplete',
     long_description=readme,
@@ -29,7 +29,7 @@ setup(
         'Topic :: Text Processing :: Indexing',
         'Topic :: Text Processing :: Linguistic',
     ],
-    keywords='autocoder,autocomplete,code-autocomplete',
+    keywords='CodeGenie,autocomplete,code-autocomplete',
     install_requires=[
         "loguru",
         "transformers",

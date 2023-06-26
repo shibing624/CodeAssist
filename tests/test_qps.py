@@ -9,7 +9,7 @@ import unittest
 from time import time
 
 sys.path.append('..')
-from autocoder.gpt2_coder import GPT2Coder
+from codeassist.gpt2_coder import GPT2Coder
 
 pwd_path = os.path.abspath(os.path.dirname(__file__))
 

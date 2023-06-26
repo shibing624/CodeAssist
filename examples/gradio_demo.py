@@ -8,7 +8,7 @@ import sys
 import gradio as gr
 
 sys.path.append('..')
-from autocoder.gpt2_coder import GPT2Coder
+from codeassist.gpt2_coder import GPT2Coder
 
 model = GPT2Coder("shibing624/code-autocomplete-gpt2-base")
 

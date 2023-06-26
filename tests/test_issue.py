@@ -9,7 +9,7 @@ import unittest
 import torch
 
 sys.path.append('..')
-from autocoder.gpt2_coder import GPT2Coder
+from codeassist.gpt2_coder import GPT2Coder
 
 
 class IssueTestCase(unittest.TestCase):
