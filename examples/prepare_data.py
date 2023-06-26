@@ -7,7 +7,7 @@ import argparse
 import sys
 
 sys.path.append("..")
-from autocomplete import create_dataset
+from autocoder import create_dataset
 from sklearn.model_selection import train_test_split
 
 

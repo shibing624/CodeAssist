@@ -4,7 +4,7 @@
 """
 
 import gradio as gr
-from autocomplete.gpt2_coder import GPT2Coder
+from autocoder.gpt2_coder import GPT2Coder
 
 model = GPT2Coder("shibing624/code-autocomplete-gpt2-base")
 

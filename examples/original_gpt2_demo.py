@@ -7,7 +7,7 @@
 import sys
 
 sys.path.append('..')
-from autocomplete.gpt2_coder import GPT2Coder
+from autocoder.gpt2_coder import GPT2Coder
 
 if __name__ == '__main__':
     prompts = [

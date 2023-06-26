@@ -12,7 +12,7 @@ import torch
 from loguru import logger
 
 sys.path.append('..')
-from autocomplete.gpt2_coder import GPT2Coder
+from autocoder.gpt2_coder import GPT2Coder
 
 pwd_path = os.path.abspath(os.path.dirname(__file__))
 use_cuda = torch.cuda.is_available()

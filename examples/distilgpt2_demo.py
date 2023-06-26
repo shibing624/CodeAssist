@@ -6,7 +6,7 @@
 import sys
 
 sys.path.append('..')
-from autocomplete import GPT2Coder
+from autocoder import GPT2Coder
 
 m = GPT2Coder("shibing624/code-autocomplete-distilgpt2-python")
 print(m.generate('def load_csv_file(file_path):')[0])

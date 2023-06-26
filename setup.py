@@ -7,14 +7,14 @@ with open('README.md', 'r', encoding='utf-8') as f:
     readme = f.read()
 
 setup(
-    name='code-autocomplete',
+    name='autocoder',
     version=__version__,
     description='Code AutoComplete',
     long_description=readme,
     long_description_content_type='text/markdown',
     author='XuMing',
     author_email='xuming624@qq.com',
-    url='https://github.com/shibing624/code-autocomplete',
+    url='https://github.com/shibing624/autocoder',
     license='Apache License 2.0',
     zip_safe=False,
     python_requires='>=3.5',
@@ -29,13 +29,13 @@ setup(
         'Topic :: Text Processing :: Indexing',
         'Topic :: Text Processing :: Linguistic',
     ],
-    keywords='autocomplete,code-autocomplete',
+    keywords='autocoder,autocomplete,code-autocomplete',
     install_requires=[
         "loguru",
         "transformers",
         "pandas",
     ],
     packages=find_packages(exclude=['tests']),
-    package_dir={'autocomplete': 'autocomplete'},
-    package_data={'autocomplete': ['*.*']}
+    package_dir={'autocoder': 'autocoder'},
+    package_data={'autocoder': ['*.*']}
 )

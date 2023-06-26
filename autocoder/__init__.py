@@ -6,4 +6,4 @@
 
 __version__ = "0.1.0"
 
-from autocomplete.gpt2_coder import GPT2Coder
+from autocoder.gpt2_coder import GPT2Coder
