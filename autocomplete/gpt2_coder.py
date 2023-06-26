@@ -2,36 +2,27 @@
 """
 @author:XuMing(xuming624@qq.com)
 @description: Rewrite the original gpt2 model to support the autocomplete
-refer: https://github.com/ThilinaRajapakse/simpletransformers/tree/master/simpletransformers/language_modeling
 """
 
-import os
-from typing import Dict, List, Union
-from loguru import logger
 import math
+import os
 import random
+from typing import Dict, List
+
 import numpy as np
 import pandas as pd
 import torch
+from loguru import logger
 from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data import DataLoader, Dataset, RandomSampler, SequentialSampler
 from torch.utils.data.distributed import DistributedSampler
 from tqdm.auto import tqdm, trange
-from transformers.optimization import AdamW, get_linear_schedule_with_warmup
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 from transformers.data.datasets.language_modeling import TextDataset
+from transformers.optimization import AdamW, get_linear_schedule_with_warmup
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-
-def set_seed(seed):
-    logger.info(f"Set seed for random, numpy and torch: {seed}")
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(seed)
 
 
 class GPT2Coder:
@@ -64,6 +55,14 @@ class GPT2Coder:
         if special_words_dict is not None:
             self.add_special_words(special_words_dict)
         self.results = {}
+
+    def set_seed(self, seed):
+        logger.debug(f"Set seed for random, numpy and torch: {seed}")
+        random.seed(seed)
+        np.random.seed(seed)
+        torch.manual_seed(seed)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(seed)
 
     def add_special_words(self, special_words_dict):
         origin_num_tokens = len(self.tokenizer)
@@ -157,7 +156,7 @@ class GPT2Coder:
 
         Utility function to be used by the train_model() method. Not intended to be used directly.
         """
-        set_seed(seed)
+        self.set_seed(seed)
 
         def collate(examples: List[torch.Tensor]):
             if self.tokenizer._pad_token is None:

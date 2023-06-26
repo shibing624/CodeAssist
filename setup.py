@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 
-__version__ = "0.0.4"
+__version__ = "0.1.0"
 
 with open('README.md', 'r', encoding='utf-8') as f:
     readme = f.read()
@@ -32,10 +32,10 @@ setup(
     keywords='autocomplete,code-autocomplete',
     install_requires=[
         "loguru",
-        "transformers>=4.6.0",
+        "transformers",
         "pandas",
     ],
     packages=find_packages(exclude=['tests']),
     package_dir={'autocomplete': 'autocomplete'},
-    package_data={'autocomplete': ['*.*', 'utils/*']}
+    package_data={'autocomplete': ['*.*']}
 )

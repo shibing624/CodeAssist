@@ -11,6 +11,7 @@ from autocomplete.gpt2_coder import GPT2Coder
 
 if __name__ == '__main__':
     prompts = [
+        "def load_csv_file(file_path):",
         "import numpy as np",
         "import torch.nn as",
         'parser.add_argument("--num_train_epochs",',

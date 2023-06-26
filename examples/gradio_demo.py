@@ -19,6 +19,7 @@ if __name__ == '__main__':
     print(ai_text('import torch.nn as'))
 
     examples = [
+        ['def load_csv_file(file_path):'],
         ['import torch.nn as'],
         ['parser.add_argument("--num_train_epochs",'],
         ['torch.device('],

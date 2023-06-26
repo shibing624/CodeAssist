@@ -2,20 +2,22 @@
 """
 @author:https://github.com/labmlai
 @description: Parse all files and write to a single file
-refer: https://github.com/labmlai/python_autocomplete/blob/master/python_autocomplete/create_dataset.py
+
+part of code refer: https://github.com/labmlai/python_autocomplete/blob/master/python_autocomplete/create_dataset.py
 """
-import os
 import glob
+import os
 import re
+import ssl
 import string
 import urllib.error
 import urllib.request
 import zipfile
 from pathlib import Path
-from typing import List, Set
 from typing import Optional
+from typing import Set
+
 from loguru import logger
-import ssl
 
 ssl._create_default_https_context = ssl._create_unverified_context
 PRINTABLE = set(string.printable)

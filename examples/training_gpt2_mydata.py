@@ -33,6 +33,7 @@ if __name__ == '__main__':
     if args.do_predict:
         model = GPT2Coder(model_name_or_path=args.model_dir, max_seq_length=128, do_lower_case=False)
         prompts = [
+            "def load_csv_file(file_path):",
             "import numpy as np",
             "import torch.nn as",
             'parser.add_argument("--num_train_epochs",',
