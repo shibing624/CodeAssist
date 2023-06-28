@@ -28,7 +28,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 class GPT2Coder:
     def __init__(
             self,
-            model_name_or_path: str,
+            model_name_or_path: str = "shibing624/code-autocomplete-gpt2-base",
             max_seq_length: int = 128,
             do_lower_case: bool = False,
             special_words_dict: Dict = None
