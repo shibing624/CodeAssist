@@ -23,5 +23,5 @@ prompts = [
     "write a C++ code to sum 1 to 12.",
 ]
 for prompt in prompts:
-    print(prompt)
-    print(m.generate(prompt)[0])
+    print('input :', prompt)
+    print('output:', m.generate(prompt)[0])
