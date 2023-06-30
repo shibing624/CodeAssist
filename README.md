@@ -57,14 +57,14 @@ backend model: `shibing624/code-autocomplete-gpt2-base`
 
 ## Install
 
-```
+```shell
 pip install torch # conda install pytorch
 pip install -U codeassist
 ```
 
 or
 
-```
+```shell
 git clone https://github.com/shibing624/codeassist.git
 cd CodeAssist
 python setup.py install
@@ -287,7 +287,7 @@ version = {1.0.0}
 
 授权协议为 [The Apache License 2.0](/LICENSE)，可免费用做商业用途。请在产品说明中附加codeassist的链接和授权协议。
 
-# Contribute
+## Contribute
 
 项目代码还很粗糙，如果大家对代码有所改进，欢迎提交回本项目，在提交之前，注意以下两点：
 
@@ -296,7 +296,7 @@ version = {1.0.0}
 
 之后即可提交PR。
 
-# Reference
+## Reference
 
 - [gpt-2-simple](https://github.com/minimaxir/gpt-2-simple)
 - [galois-autocompleter](https://github.com/galois-autocompleter/galois-autocompleter)
