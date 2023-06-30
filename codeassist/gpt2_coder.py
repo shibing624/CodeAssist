@@ -29,7 +29,7 @@ class GPT2Coder:
     def __init__(
             self,
             model_name_or_path: str = "shibing624/code-autocomplete-gpt2-base",
-            max_seq_length: int = 128,
+            max_length: int = 128,
             do_lower_case: bool = False,
             special_words_dict: Dict = None
     ):
@@ -38,20 +38,19 @@ class GPT2Coder:
     
         Args:
             model_name_or_path: Default Transformer model name or path to a directory containing Transformer model file (pytorch_nodel.bin).
-            max_seq_length: The maximum total input sequence length after tokenization.
+            max_length: The maximum total input sequence length after tokenization.
             do_lower_case: Set this flag if you are using an uncased model.
             special_words_dict: A dictionary of special words and their token ids.
         """
         self.model_name_or_path = model_name_or_path
         self.do_lower_case = do_lower_case
-        if max_seq_length > 1024:
-            logger.warning("GPT only allows a max_seq_length of 1024. Value will be set to 1024")
-            max_seq_length = 1024
-        self.max_seq_length = max_seq_length
+        if max_length > 1024:
+            logger.warning("GPT only allows a max_length of 1024. Value will be set to 1024")
+            max_length = 1024
+        self.max_length = max_length
         self.model = GPT2LMHeadModel.from_pretrained(model_name_or_path)
         self.model.to(device)
         self.tokenizer = GPT2Tokenizer.from_pretrained(model_name_or_path, do_lower_case=do_lower_case)
-        # When download from transformers, cache dir: ~/.cache/huggingface/transformers/
         if special_words_dict is not None:
             self.add_special_words(special_words_dict)
         self.results = {}
@@ -111,7 +110,7 @@ class GPT2Coder:
         """
         os.makedirs(output_dir, exist_ok=True)
         self.model.to(device)
-        train_dataset = TextDataset(self.tokenizer, train_file, self.max_seq_length, overwrite_cache=True,
+        train_dataset = TextDataset(self.tokenizer, train_file, self.max_length, overwrite_cache=True,
                                     cache_dir=output_dir)
 
         global_step, training_details = self.train(
@@ -288,7 +287,7 @@ class GPT2Coder:
             result: Dictionary containing evaluation results.
         """
         self.model.to(device)
-        eval_dataset = TextDataset(self.tokenizer, eval_file, self.max_seq_length, overwrite_cache=True)
+        eval_dataset = TextDataset(self.tokenizer, eval_file, self.max_length, overwrite_cache=True)
         result = self.evaluate(eval_dataset, output_dir, batch_size=batch_size)
         self.results.update(result)
 
@@ -363,6 +362,7 @@ class GPT2Coder:
             self,
             prompt: str,
             is_add_prompt: bool = True,
+            max_length: int = 128,
             temperature: int = 1.0,
             top_k: int = 50,
             top_p: float = 0.95,
@@ -373,7 +373,7 @@ class GPT2Coder:
             early_stopping: bool = True,
             stop_word: str = "\n\n",
             bad_words: list = None,
-            **kwargs
+            **kwargs,
     ):
         """
         Generate text using a GPT2 LanguageGenerationModel
@@ -381,6 +381,7 @@ class GPT2Coder:
         Args:
             prompt: A prompt text for the model.
             is_add_prompt: Whether to add the prompt to the returned text.
+            max_length: The maximum length of the sequence to be generated.
             temperature: The sampling temperature.
             top_k: The number of top k tokens to be considered by sampling.
             top_p: The sampling probability for top p tokens.
@@ -401,7 +402,7 @@ class GPT2Coder:
                          bad_words] if bad_words else None
         output_sequences = self.model.generate(
             input_ids=encoded_prompt_ids,
-            max_length=self.max_seq_length + len(encoded_prompt_ids[0]),
+            max_length=max_length if max_length is not None else self.max_length,
             temperature=temperature,
             top_k=top_k,
             top_p=top_p,

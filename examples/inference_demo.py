@@ -7,17 +7,20 @@ import argparse
 import sys
 
 sys.path.append('..')
-from codeassist.gpt2_coder import GPT2Coder
+from codeassist import GPT2Coder, WizardCoder
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Params')
-    parser.add_argument('--model_dir', type=str, default="outputs-fine-tuned", help='the path to load fine-tuned model')
-    parser.add_argument('--max_length', type=int, default=512, help='maximum length for code generation')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model_type', type=str, default="wizard", help='wizard or gpt2')
+    parser.add_argument('--model_name', type=str, default="WizardLM/WizardCoder-15B-V1.0", help='model name or path')
+    parser.add_argument('--max_length', type=int, default=128, help='maximum length for code generation')
     parser.add_argument('--temperature', type=float, default=1.0, help='temperature for sampling-based code generation')
     args = parser.parse_args()
-
-    # load fine-tuned model and tokenizer from path specified by --model_dir
-    model = GPT2Coder(args.model_dir, args.max_length)
+    print(args)
+    if args.model_type == 'wizard':
+        model = WizardCoder(args.model_name)
+    else:
+        model = GPT2Coder(args.model_name)
 
     # generate code
     while True:
@@ -25,7 +28,7 @@ if __name__ == '__main__':
         context = input(">>> ")
         if context == "exit":
             break
-        generated_codes = model.generate(context, temperature=args.temperature)
+        generated_codes = model.generate(context, temperature=args.temperature, max_length=args.max_length)
         print("Generated code:")
         for i, code in enumerate(generated_codes):
             print("{}:\n {}".format(i + 1, code))

@@ -42,11 +42,12 @@ CodeAssist 是一个高级代码补全工具，高质量为 Python、Java 和 C+
 
 ### Release Models
 
-Model upload to HF's model hub:
+| Arch   | BaseModel         | Model                                                                                                                   | Model Size | 
+|:-------|:------------------|:------------------------------------------------------------------------------------------------------------------------|:----------:|
+| GPT   | gpt2              | [shibing624/code-autocomplete-gpt2-base](https://huggingface.co/shibing624/code-autocomplete-gpt2-base)                 |   487MB    |
+| GPT   | distilgpt2        | [shibing624/code-autocomplete-distilgpt2-python](https://huggingface.co/shibing624/code-autocomplete-distilgpt2-python) |   319MB    |
+| GPT   | bigcode/starcoder | [WizardLM/WizardCoder-15B-V1.0](https://huggingface.co/WizardLM/WizardCoder-15B-V1.0)                                   |    29GB    |
 
-- DistilGPT2-python: [shibing624/code-autocomplete-distilgpt2-python](https://huggingface.co/shibing624/code-autocomplete-distilgpt2-python) (fine-tuned distilgpt2, model size: 319MB)
-- GPT2-python: [shibing624/code-autocomplete-gpt2-base](https://huggingface.co/shibing624/code-autocomplete-gpt2-base) (fine-tuned gpt2, model size: 487MB)
-- WizardCoder: [WizardLM/WizardCoder-15B-V1.0](https://huggingface.co/WizardLM/WizardCoder-15B-V1.0) (fine-tuned `bigcode/starcoder`, model size: 29GB)
 
 ### Demo
 
@@ -111,7 +112,7 @@ def load_csv_file(file_path):
     return data
 ```
 
-效果惊艳，当前只支持英文输入，可以输入指令要求或者代码前缀。
+model output is impressively effective, it currently supports English input only, and you can enter instructions or code prefixes as required.
 
 ### distilgpt2 model
 

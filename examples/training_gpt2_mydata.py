@@ -12,8 +12,8 @@ from codeassist import GPT2Coder
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_name", type=str, default="gpt2", help="Model arch, gpt2, gpt2-medium or distilgpt2")
-    parser.add_argument("--train_file", type=str, default="download/python/train.txt", help="Train file path")
-    parser.add_argument("--valid_file", type=str, default="download/python/valid.txt", help="Valid file path")
+    parser.add_argument("--train_file", type=str, default="data/train_code_5k.txt", help="Train file path")
+    parser.add_argument("--valid_file", type=str, default="data/train_code_5k.txt", help="Valid file path")
     parser.add_argument("--do_train", action="store_true", help="Whether to run training.")
     parser.add_argument("--do_predict", action="store_true", help="Whether to run predict.")
     parser.add_argument("--output_dir", type=str, default="./outputs-fine-tuned/", help="Output dir")

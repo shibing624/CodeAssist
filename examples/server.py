@@ -3,13 +3,14 @@
 @description: pip install fastapi uvicorn
 """
 import argparse
-import uvicorn
-import sys
 import os
-from fastapi import FastAPI, Query
-from starlette.middleware.cors import CORSMiddleware
+import sys
+
 import torch
+import uvicorn
+from fastapi import FastAPI, Query
 from loguru import logger
+from starlette.middleware.cors import CORSMiddleware
 
 sys.path.append('..')
 from codeassist import GPT2Coder

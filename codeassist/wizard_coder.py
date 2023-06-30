@@ -14,6 +14,12 @@ import numpy as np
 import torch
 from datasets import load_dataset
 from loguru import logger
+from peft import (
+    LoraConfig,
+    get_peft_model,
+    prepare_model_for_int8_training
+
+)
 from tqdm import tqdm
 from transformers import (
     PreTrainedTokenizer,
@@ -150,6 +156,8 @@ class WizardCoder:
             save_total_limit: int = 10,
             report_to: Optional[List[str]] = "tensorboard",
             overwrite_output_dir: bool = True,
+            use_peft: bool = True,
+            int8: bool = False,
             **kwargs,
     ):
         """
@@ -175,6 +183,8 @@ class WizardCoder:
             save_total_limit (optional): Maximum number of checkpoints to keep.
             report_to (optional): The list of integrations to report the results and logs to.
             overwrite_output_dir (optional): Overwrite the content of the output directory.
+            use_peft (optional): If True, use the PEFT scheduler to schedule the training.
+            int8 (optional): If True, use int8 quantization for the model.
             kwargs (optional): Optional model specific arguments.
 
         Returns:
@@ -185,8 +195,10 @@ class WizardCoder:
         self.set_seed(42)
         logger.debug(f"Tokenizer: {self.tokenizer}")
         logger.debug(f"Model: {self.model}")
+
         training_args = TrainingArguments(
             output_dir=output_dir,
+            dataloader_drop_last=True,
             learning_rate=lr,
             num_train_epochs=num_epochs,
             max_steps=max_steps,
@@ -253,19 +265,46 @@ class WizardCoder:
         data_collator = DataCollatorForSupervisedDataset(tokenizer=self.tokenizer)
         data_module = dict(train_dataset=train_dataset, eval_dataset=None, data_collator=data_collator)
 
+        # update model train config
+        if training_args.gradient_checkpointing:
+            self.model.gradient_checkpointing_enable()
+            self.model.config.use_cache = False
+        else:
+            self.model.config.use_cache = True
+        self.model.enable_input_require_grads()
+
         # Tell Trainer not to attempt DataParallel
         self.model.is_parallelizable = True
         self.model.model_parallel = True
+        # Setup peft
+        if use_peft:
+            peft_config = LoraConfig(
+                task_type="CAUSAL_LM",
+                inference_mode=False,
+                r=16,
+                lora_alpha=32,
+                lora_dropout=0.05,
+                target_modules=["c_proj", "c_attn", "q_attn"],
+                bias="none",
+            )
+            if int8:
+                self.model = prepare_model_for_int8_training(self.model)
+            self.model = get_peft_model(self.model, peft_config)
+            self.model.print_trainable_parameters()  # Be more transparent about the % of trainable params.
+        else:
+            logger.warning("Now full model params fine-tune, which is slow, set `use_peft=True` for lora fine-tune.")
+        logger.debug(f"Tokenizer: {self.tokenizer}")
+        logger.debug(f"Model: {self.model}")
 
         trainer = Trainer(model=self.model, tokenizer=self.tokenizer, args=training_args, **data_module)
-        self.model.config.use_cache = False
-
+        logger.info("*** Train ***")
+        logger.debug(f"Train dataloader example: {next(iter(trainer.get_train_dataloader()))}")
         (global_step, training_loss, metrics) = trainer.train()
         self.results.update(metrics)
         trainer.log_metrics("train", metrics)
         trainer.save_metrics("train", metrics)
         trainer.save_state()
-        self.safe_save_model_for_hf_trainer(trainer=trainer, output_dir=output_dir)
+        self.save_model(output_dir=output_dir)
 
         logger.info(f" Training model done. Saved to {output_dir}.")
 
@@ -293,13 +332,14 @@ class WizardCoder:
 
         return global_step, metrics
 
-    def safe_save_model_for_hf_trainer(self, trainer: Trainer, output_dir: str):
-        """Collects the state dict and dump to disk."""
-        state_dict = trainer.model.state_dict()
-        if trainer.args.should_save:
-            cpu_state_dict = {key: value.cpu() for key, value in state_dict.items()}
-            del state_dict
-            trainer._save(output_dir, state_dict=cpu_state_dict)
+    def save_model(self, output_dir):
+        """Save the model and the tokenizer."""
+        os.makedirs(output_dir, exist_ok=True)
+        model = self.model
+        # Take care of distributed/parallel training
+        model_to_save = model.module if hasattr(model, "module") else model
+        model_to_save.save_pretrained(output_dir)
+        self.tokenizer.save_pretrained(output_dir)
 
     def smart_tokenizer_and_embedding_resize(
             self,
