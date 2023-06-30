@@ -43,19 +43,29 @@ PROMPT_DICT = {
 class WizardCoder:
     def __init__(
             self,
-            model_name_or_path: str,
+            model_name_or_path: str = "WizardLM/WizardCoder-15B-V1.0",
             max_seq_length: int = 512,
             do_lower_case: bool = False,
-            special_words_dict: Dict = None
+            special_words_dict: Dict = None,
+            use_cuda: Optional[bool] = True,
+            cuda_device: Optional[int] = -1,
+            fp16: bool = True,
+            bf16: bool = False,
+            **kwargs,
     ):
         """
-        Initializes a GPT2 LanguageModelingModel.
+        Initializes a AutoModelForCausalLM
     
         Args:
             model_name_or_path: Default Transformer model name or path to a directory containing Transformer model file (pytorch_nodel.bin).
             max_seq_length: The maximum total input sequence length after tokenization.
             do_lower_case: Set this flag if you are using an uncased model.
             special_words_dict: A dictionary of special words and their token ids.
+            use_cuda: Use GPU if available.
+            cuda_device: Which cuda device to use.
+            fp16: Use 16-bit (mixed) precision (through NVIDIA apex) instead of 32-bit.
+            bf16: Use 16-bit (mixed) precision (through NVIDIA apex) instead of 32-bit.
+            **kwargs: Additional kwargs for the Transformers `PreTrainedModel` and `PreTrainedTokenizer` classes.
         """
         self.model_name_or_path = model_name_or_path
         self.do_lower_case = do_lower_case
@@ -63,7 +73,44 @@ class WizardCoder:
             logger.warning("GPT only allows a max_seq_length of 1024. Value will be set to 1024")
             max_seq_length = 1024
         self.max_seq_length = max_seq_length
-        self.model = AutoModelForCausalLM.from_pretrained(model_name_or_path)
+        self.fp16 = fp16
+        self.bf16 = bf16
+        self.device_map = "auto"
+        if use_cuda:
+            if torch.cuda.is_available():
+                if cuda_device == -1:
+                    self.device = torch.device("cuda")
+                else:
+                    self.device = torch.device(f"cuda:{cuda_device}")
+                    self.device_map = {"": int(cuda_device)}
+            else:
+                raise ValueError(
+                    "'use_cuda' set to True when cuda is unavailable."
+                    "Make sure CUDA is available or set `use_cuda=False`."
+                )
+        else:
+            if torch.backends.mps.is_available():
+                self.device = torch.device("mps")
+                self.device_map = {"": "mps"}
+            else:
+                self.device = "cpu"
+                self.device_map = {"": "cpu"}
+        logger.debug(f"Device: {self.device}")
+        if not use_cuda:
+            self.fp16 = False
+        world_size = int(os.environ.get("WORLD_SIZE", 1))
+        self.ddp = world_size != 1
+        if self.ddp:
+            self.device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
+        if torch.cuda.is_bf16_supported() and not self.bf16:
+            logger.warning("GPU supports bf16, you can enable bf16.")
+        self.torch_dtype = torch.bfloat16 if self.bf16 else (torch.float16 if self.fp16 else torch.float32)
+        self.model = AutoModelForCausalLM.from_pretrained(
+            model_name_or_path,
+            torch_dtype=self.torch_dtype,
+            device_map=self.device_map,
+            **kwargs,
+        )
         self.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, do_lower_case=do_lower_case)
 
         if self.tokenizer.pad_token is None:
@@ -105,8 +152,6 @@ class WizardCoder:
             optimizer: str = "adamw_torch",
             save_strategy: str = "steps",
             save_total_limit: int = 10,
-            fp16: bool = True,
-            bf16: bool = False,
             report_to: Optional[List[str]] = "tensorboard",
             overwrite_output_dir: bool = True,
             **kwargs,
@@ -132,8 +177,6 @@ class WizardCoder:
             optimizer (optional): Optimizer to use. Can be 'adamw_torch', 'adamw_deepspeed', 'adam', 'sgd', 'lamb' or 'lamb_wd'.
             save_strategy (optional): Strategy to save checkpoints. Can be 'steps' or 'epoch'.
             save_total_limit (optional): Maximum number of checkpoints to keep.
-            fp16 (optional): Set to True to use apex for mixed precision training.
-            bf16 (optional): Set to True to use deepspeed BF16 precision.
             report_to (optional): The list of integrations to report the results and logs to.
             overwrite_output_dir (optional): Overwrite the content of the output directory.
             kwargs (optional): Optional model specific arguments.
@@ -143,7 +186,7 @@ class WizardCoder:
             metrics: Dictionary containing the evaluation results.
         """
         os.makedirs(output_dir, exist_ok=True)
-
+        self.set_seed(42)
         logger.debug(f"Tokenizer: {self.tokenizer}")
         logger.debug(f"Model: {self.model}")
 
@@ -196,8 +239,8 @@ class WizardCoder:
             load_best_model_at_end=True if eval_file is not None else False,
             ddp_find_unused_parameters=False,
             save_total_limit=save_total_limit,
-            fp16=fp16,
-            bf16=bf16,
+            fp16=self.fp16,
+            bf16=self.bf16,
             report_to=report_to,
             overwrite_output_dir=overwrite_output_dir,
             no_cuda=True if device == "cpu" else False,
@@ -260,7 +303,7 @@ class WizardCoder:
         if trainer.args.should_save:
             cpu_state_dict = {key: value.cpu() for key, value in state_dict.items()}
             del state_dict
-            trainer._save(output_dir, state_dict=cpu_state_dict)  # noqa
+            trainer._save(output_dir, state_dict=cpu_state_dict)
 
     def smart_tokenizer_and_embedding_resize(
             self,
@@ -341,9 +384,11 @@ class WizardCoder:
         data_dict = self.preprocess(sources, targets, tokenizer)
         return data_dict
 
+    @torch.inference_mode()
     def generate(
             self,
             prompt: str,
+            max_new_tokens=2048,
             is_add_prompt: bool = True,
             temperature: int = 1.0,
             top_k: int = 50,
@@ -353,15 +398,16 @@ class WizardCoder:
             num_return_sequences: int = 1,
             length_penalty: float = 2.0,
             early_stopping: bool = True,
-            stop_word: str = "\n\n",
+            stop_word: str = None,
             bad_words: list = None,
             **kwargs
     ):
         """
-        Generate text using a GPT2 LanguageGenerationModel
+        Generate text using a LanguageGenerationModel
 
         Args:
             prompt: A prompt text for the model.
+            max_new_tokens: The maximum number of tokens to be generated.
             is_add_prompt: Whether to add the prompt to the returned text.
             temperature: The sampling temperature.
             top_k: The number of top k tokens to be considered by sampling.
@@ -383,7 +429,7 @@ class WizardCoder:
                          bad_words] if bad_words else None
         output_sequences = self.model.generate(
             input_ids=encoded_prompt_ids,
-            max_length=self.max_seq_length + len(encoded_prompt_ids[0]),
+            max_new_tokens=max_new_tokens if max_new_tokens else self.max_seq_length,
             temperature=temperature,
             top_k=top_k,
             top_p=top_p,
