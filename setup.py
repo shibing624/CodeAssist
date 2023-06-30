@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 
-__version__ = "0.1.0"
+__version__ = "1.0.0"
 
 with open('README.md', 'r', encoding='utf-8') as f:
     readme = f.read()
@@ -34,6 +34,8 @@ setup(
         "loguru",
         "transformers",
         "pandas",
+        "datasets",
+        "tqdm",
     ],
     packages=find_packages(exclude=['tests']),
     package_dir={'autocoder': 'autocoder'},

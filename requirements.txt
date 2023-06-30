@@ -1,3 +1,5 @@
 loguru
 transformers
+datasets
 pandas
+tqdm

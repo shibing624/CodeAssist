@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 @author:XuMing(xuming624@qq.com)
-@description: Rewrite the original gpt2 model to support the autocomplete
+@description: Rewrite the original WizardCoder to support code completion.
 """
 
 import math

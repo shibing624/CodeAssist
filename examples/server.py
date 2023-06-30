@@ -12,11 +12,11 @@ import torch
 from loguru import logger
 
 sys.path.append('..')
-from codeassist.gpt2_coder import GPT2Coder
+from codeassist import GPT2Coder
 
 pwd_path = os.path.abspath(os.path.dirname(__file__))
 use_cuda = torch.cuda.is_available()
-# Use finetuned GPT2 model
+# Use finetuned GPT model
 parser = argparse.ArgumentParser()
 parser.add_argument("--model_name_or_path", type=str, default="shibing624/code-autocomplete-gpt2-base",
                     help="Model save dir or model name")
@@ -41,7 +41,7 @@ async def index():
 @app.get('/autocomplete')
 async def autocomplete(q: str = Query(..., min_length=1, max_length=512, title='query')):
     try:
-        # Generate text using the model. Verbose set to False to prevent logging generated sequences.
+        # Generate text using the model. Verbose set False to prevent logging generated sequences.
         generated = model.generate(q)
         result_dict = generated[0]
         logger.debug(f"Successfully autocomplete, q:{q}, res:{result_dict}")

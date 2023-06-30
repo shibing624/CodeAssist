@@ -16,7 +16,7 @@ from loguru import logger
 from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data import DataLoader, Dataset, RandomSampler, SequentialSampler
 from torch.utils.data.distributed import DistributedSampler
-from tqdm.auto import tqdm, trange
+from tqdm import tqdm, trange
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 from transformers.data.datasets.language_modeling import TextDataset
 from transformers.optimization import AdamW, get_linear_schedule_with_warmup

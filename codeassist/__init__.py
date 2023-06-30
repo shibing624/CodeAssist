@@ -4,7 +4,7 @@
 @description: 
 """
 
-__version__ = "0.1.0"
+__version__ = "1.0.0"
 
 from codeassist.gpt2_coder import GPT2Coder
 from codeassist.wizard_coder import WizardCoder
