@@ -1,6 +1,6 @@
 ---
 name: Usage Question
-about: Ask a question about code-autocomplete usage
+about: Ask a question about usage
 title: ''
 labels: question
 assignees: ''
