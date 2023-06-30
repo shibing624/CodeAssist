@@ -14,7 +14,6 @@ if __name__ == '__main__':
     parser.add_argument('--model_dir', type=str, default="outputs-fine-tuned", help='the path to load fine-tuned model')
     parser.add_argument('--max_length', type=int, default=512, help='maximum length for code generation')
     parser.add_argument('--temperature', type=float, default=1.0, help='temperature for sampling-based code generation')
-    parser.add_argument('--num_return_sequences', type=int, default=1, help='number of sequences to be generated')
     args = parser.parse_args()
 
     # load fine-tuned model and tokenizer from path specified by --model_dir
@@ -26,8 +25,7 @@ if __name__ == '__main__':
         context = input(">>> ")
         if context == "exit":
             break
-        generated_codes = model.generate(context, temperature=args.temperature,
-                                         num_return_sequences=args.num_return_sequences)
+        generated_codes = model.generate(context, temperature=args.temperature)
         print("Generated code:")
         for i, code in enumerate(generated_codes):
             print("{}:\n {}".format(i + 1, code))
