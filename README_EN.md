@@ -144,7 +144,7 @@ example: [examples/use_transformers_gpt2.py](https://github.com/shibing624/CodeA
 
 ### Train Model
 #### Train WizardCoder model
-example: [training_wizardcoder_mydata.py](https://github.com/shibing624/CodeAssist/blob/main/examples/training_wizardcoder_mydata.py)
+example: [examples/training_wizardcoder_mydata.py](https://github.com/shibing624/CodeAssist/blob/main/examples/training_wizardcoder_mydata.py)
 
 ```shell
 cd examples
@@ -152,7 +152,7 @@ python training_wizardcoder_mydata.py --do_train --do_predict --num_epochs 1 --o
 ```
 
 #### Train distilgpt2 model
-example: [training_gpt2_mydata.py](https://github.com/shibing624/CodeAssist/blob/main/examples/training_gpt2_mydata.py)
+example: [examples/training_gpt2_mydata.py](https://github.com/shibing624/CodeAssist/blob/main/examples/training_gpt2_mydata.py)
 
 ```shell
 cd examples
