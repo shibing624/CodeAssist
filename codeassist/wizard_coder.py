@@ -233,7 +233,7 @@ class WizardCoder:
             train_dataset = raw_train_datasets.map(
                 self.train_tokenize_function,
                 batched=True,
-                num_proc=4,
+                num_proc=1,
                 remove_columns=raw_train_datasets.column_names,
                 desc="Running tokenizer on train dataset",
                 fn_kwargs={"tokenizer": self.tokenizer}
@@ -248,7 +248,7 @@ class WizardCoder:
                 eval_dataset = raw_eval_datasets.map(
                     self.train_tokenize_function,
                     batched=True,
-                    num_proc=4,
+                    num_proc=1,
                     remove_columns=raw_eval_datasets.column_names,
                     desc="Running tokenizer on train dataset",
                     fn_kwargs={"tokenizer": self.tokenizer}
