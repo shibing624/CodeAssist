@@ -16,6 +16,7 @@ import torch
 from datasets import load_dataset
 from loguru import logger
 from peft import (
+    PeftModel,
     LoraConfig,
     get_peft_model,
     prepare_model_for_int8_training,
@@ -51,6 +52,7 @@ class WizardCoder:
     def __init__(
             self,
             model_name_or_path: str = "WizardLM/WizardCoder-15B-V1.0",
+            peft_name: Optional[str] = None,
             special_words_dict: Dict = None,
             use_cuda: Optional[bool] = has_cuda,
             cuda_device: Optional[int] = -1,
@@ -63,7 +65,7 @@ class WizardCoder:
     
         Args:
             model_name_or_path: Default Transformer model name or path to a directory containing Transformer model file (pytorch_nodel.bin).
-            max_seq_length: The maximum total input sequence length after tokenization.
+            peft_name: The name of the PEFT model to use.
             special_words_dict: A dictionary of special words and their token ids.
             use_cuda: Use GPU if available.
             cuda_device: Which cuda device to use.
@@ -111,6 +113,17 @@ class WizardCoder:
             device_map=self.device_map,
             **kwargs,
         )
+        if peft_name:
+            # Load PEFT model for inference default, if you want to continue training, please set is_trainable=True
+            self.model = PeftModel.from_pretrained(
+                self.model,
+                peft_name,
+                torch_dtype=self.torch_dtype,
+                device_map=self.device_map,
+                is_trainable=False,
+            )
+            logger.info(f"Loaded peft model from {peft_name}")
+
         self.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
         if self.tokenizer.pad_token_id is None:
             self.tokenizer.pad_token_id = 0

@@ -34,14 +34,12 @@ if __name__ == '__main__':
         )
         print(f"model saved to {args.output_dir}")
     if args.do_predict:
-        model = WizardCoder(model_name_or_path=args.output_dir)
+        model = WizardCoder(model_name_or_path=args.model_name, peft_name=args.output_dir)
         prompts = [
             "def load_csv_file(file_path):",
-            "import numpy as np",
-            "import torch.nn as",
-            'parser.add_argument("--num_train_epochs",',
-            "def set_seed(",
-            "def factorial",
+            "write a C++ code to sum 1 to 12.",
+            "写个python的快排算法",
+            "生成4到400之间的随机数，用java和python写代码",
         ]
         for prompt in prompts:
             outputs = model.generate(prompt)
