@@ -225,6 +225,36 @@ class WizardCoder:
             no_cuda=True if self.device == "cpu" else False,
             **kwargs
         )
+        # update model train config
+        if training_args.gradient_checkpointing:
+            self.model.gradient_checkpointing_enable()
+            self.model.config.use_cache = False
+        else:
+            self.model.config.use_cache = True
+        self.model.enable_input_require_grads()
+
+        # Tell Trainer not to attempt DataParallel
+        self.model.is_parallelizable = True
+        self.model.model_parallel = True
+        # Setup peft
+        if use_peft:
+            peft_config = LoraConfig(
+                task_type="CAUSAL_LM",
+                inference_mode=False,
+                r=16,
+                lora_alpha=32,
+                lora_dropout=0.05,
+                target_modules=["c_proj", "c_attn", "q_attn"],
+                bias="none",
+            )
+            if int8:
+                self.model = prepare_model_for_int8_training(self.model)
+            self.model = get_peft_model(self.model, peft_config)
+            self.model.print_trainable_parameters()  # Be more transparent about the % of trainable params.
+        else:
+            logger.warning("Now full model params fine-tune, which is slow, set `use_peft=True` for lora fine-tune.")
+        logger.debug(f"Tokenizer: {self.tokenizer}")
+        logger.debug(f"Model: {self.model}")
 
         # load dataset
         raw_train_datasets = load_dataset('json', data_files=train_file, split="train")
@@ -264,40 +294,14 @@ class WizardCoder:
             logger.info(f"Training/evaluation parameters {training_args}")
 
         data_collator = DataCollatorForSupervisedDataset(tokenizer=self.tokenizer)
-        data_module = dict(train_dataset=train_dataset, eval_dataset=None, data_collator=data_collator)
-
-        # update model train config
-        if training_args.gradient_checkpointing:
-            self.model.gradient_checkpointing_enable()
-            self.model.config.use_cache = False
-        else:
-            self.model.config.use_cache = True
-        self.model.enable_input_require_grads()
-
-        # Tell Trainer not to attempt DataParallel
-        self.model.is_parallelizable = True
-        self.model.model_parallel = True
-        # Setup peft
-        if use_peft:
-            peft_config = LoraConfig(
-                task_type="CAUSAL_LM",
-                inference_mode=False,
-                r=16,
-                lora_alpha=32,
-                lora_dropout=0.05,
-                target_modules=["c_proj", "c_attn", "q_attn"],
-                bias="none",
-            )
-            if int8:
-                self.model = prepare_model_for_int8_training(self.model)
-            self.model = get_peft_model(self.model, peft_config)
-            self.model.print_trainable_parameters()  # Be more transparent about the % of trainable params.
-        else:
-            logger.warning("Now full model params fine-tune, which is slow, set `use_peft=True` for lora fine-tune.")
-        logger.debug(f"Tokenizer: {self.tokenizer}")
-        logger.debug(f"Model: {self.model}")
-
-        trainer = Trainer(model=self.model, tokenizer=self.tokenizer, args=training_args, **data_module)
+        trainer = Trainer(
+            model=self.model,
+            tokenizer=self.tokenizer,
+            args=training_args,
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset,
+            data_collator=data_collator,
+        )
         logger.info("*** Train ***")
         logger.debug(f"Train dataloader example: {next(iter(trainer.get_train_dataloader()))}")
         (global_step, training_loss, metrics) = trainer.train()
@@ -306,7 +310,6 @@ class WizardCoder:
         trainer.save_metrics("train", metrics)
         trainer.save_state()
         self.save_model(output_dir=output_dir)
-
         logger.info(f" Training model done. Saved to {output_dir}.")
 
         if eval_dataset is not None:
