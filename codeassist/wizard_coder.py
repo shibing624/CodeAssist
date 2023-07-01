@@ -476,7 +476,7 @@ class WizardCoder:
                 return_tensors="pt",
                 max_length=max_length,
                 truncation=True,
-                padding=True
+                padding=True,
             )
             outputs = self.model.generate(
                 input_ids=inputs['input_ids'].to(self.device),
