@@ -7,6 +7,7 @@
 import math
 import os
 import random
+from copy import deepcopy
 from dataclasses import dataclass
 from typing import List, Optional, Dict, Sequence, Union
 
@@ -237,9 +238,8 @@ class WizardCoder:
                 desc="Running tokenizer on train dataset",
                 fn_kwargs={"tokenizer": self.tokenizer}
             )
-            logger.debug(f"train dataset size: {len(train_dataset)}")
-            for index in random.sample(range(len(train_dataset)), 3):
-                logger.debug(f"Sample {index} of the training set: {train_dataset[index]}.")
+            logger.debug(f"Train dataset size: {len(train_dataset)}")
+            logger.debug(f"First sample of the training set: {train_dataset[0]}.")
         eval_dataset = None
         if eval_file is not None:
             raw_eval_datasets = load_dataset('json', data_files=eval_file, split="train")
@@ -252,6 +252,8 @@ class WizardCoder:
                     desc="Running tokenizer on train dataset",
                     fn_kwargs={"tokenizer": self.tokenizer}
                 )
+                logger.debug(f"Eval dataset size: {len(eval_dataset)}")
+                logger.debug(f"First sample of the eval set: {eval_dataset[0]}.")
 
         # Log on each process the small summary:
         logger.warning(
@@ -307,7 +309,7 @@ class WizardCoder:
 
         logger.info(f" Training model done. Saved to {output_dir}.")
 
-        if eval_file is not None:
+        if eval_dataset is not None:
             logger.info("*** Evaluate ***")
             metrics = trainer.evaluate(metric_key_prefix="eval")
             metrics['eval_samples'] = len(eval_dataset)
@@ -375,15 +377,13 @@ class WizardCoder:
             )
             for text in strings
         ]
-        input_ids = labels = [tokenized.input_ids[0] for tokenized in tokenized_list]
-        input_ids_lens = labels_lens = [
+        input_ids = [tokenized.input_ids[0] for tokenized in tokenized_list]
+        input_ids_lens = [
             tokenized.input_ids.ne(tokenizer.pad_token_id).sum().item() for tokenized in tokenized_list
         ]
         return dict(
             input_ids=input_ids,
-            labels=labels,
             input_ids_lens=input_ids_lens,
-            labels_lens=labels_lens,
         )
 
     def preprocess(
@@ -398,7 +398,7 @@ class WizardCoder:
             self._tokenize_fn(strings, tokenizer) for strings in (examples, sources)
         ]
         input_ids = examples_tokenized["input_ids"]
-        labels = input_ids.copy()
+        labels = deepcopy(input_ids)
         for label, source_len in zip(labels, sources_tokenized["input_ids_lens"]):
             label[:source_len] = IGNORE_INDEX
         return dict(input_ids=input_ids, labels=labels)
