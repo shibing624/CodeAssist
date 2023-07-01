@@ -158,6 +158,7 @@ class WizardCoder:
             overwrite_output_dir: bool = True,
             use_peft: bool = True,
             int8: bool = False,
+            max_eval_samples: int = 20,
             **kwargs,
     ):
         """
@@ -185,6 +186,7 @@ class WizardCoder:
             overwrite_output_dir (optional): Overwrite the content of the output directory.
             use_peft (optional): If True, use the PEFT scheduler to schedule the training.
             int8 (optional): If True, use int8 quantization for the model.
+            max_eval_samples (optional): Maximum number of samples to use for evaluation.
             kwargs (optional): Optional model specific arguments.
 
         Returns:
@@ -273,6 +275,9 @@ class WizardCoder:
         eval_dataset = None
         if eval_file is not None:
             raw_eval_datasets = load_dataset('json', data_files=eval_file, split="train")
+            if max_eval_samples is not None and max_eval_samples > 0:
+                max_eval_samples = min(len(raw_eval_datasets), max_eval_samples)
+                raw_eval_datasets = raw_eval_datasets.select(range(max_eval_samples))
             with training_args.main_process_first(desc="Eval dataset tokenization"):
                 eval_dataset = raw_eval_datasets.map(
                     self.train_tokenize_function,

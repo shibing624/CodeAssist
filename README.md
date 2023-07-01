@@ -148,8 +148,12 @@ example: [examples/training_wizardcoder_mydata.py](https://github.com/shibing624
 
 ```shell
 cd examples
-python training_wizardcoder_mydata.py --do_train --do_predict --num_epochs 1 --output_dir outputs-wizard --model_name WizardLM/WizardCoder-15B-V1.0
+CUDA_VISIBLE_DEVICES=0,1 python training_wizardcoder_mydata.py --do_train --do_predict --num_epochs 1 --output_dir outputs-wizard --model_name WizardLM/WizardCoder-15B-V1.0
 ```
+
+- GPU memory: 31GB
+- finetune need 2*V100(32GB)
+- inference need 1*V100(32GB)
 
 #### Train distilgpt2 model
 example: [examples/training_gpt2_mydata.py](https://github.com/shibing624/CodeAssist/blob/main/examples/training_gpt2_mydata.py)
