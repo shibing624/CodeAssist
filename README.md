@@ -112,7 +112,7 @@ def load_csv_file(file_path):
     return data
 ```
 
-model output is impressively effective, it currently supports English input only, and you can enter instructions or code prefixes as required.
+model output is impressively effective, it currently supports English and Chinese input, you can enter instructions or code prefixes as required.
 
 ### distilgpt2 model
 

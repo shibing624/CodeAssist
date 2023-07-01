@@ -30,7 +30,7 @@ from transformers import (
 )
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+has_cuda = torch.cuda.is_available()
 IGNORE_INDEX = -100
 PROMPT_DICT = {
     "prompt_input": (
@@ -51,7 +51,7 @@ class WizardCoder:
             self,
             model_name_or_path: str = "WizardLM/WizardCoder-15B-V1.0",
             special_words_dict: Dict = None,
-            use_cuda: Optional[bool] = True,
+            use_cuda: Optional[bool] = has_cuda,
             cuda_device: Optional[int] = -1,
             fp16: bool = True,
             bf16: bool = False,
@@ -96,6 +96,7 @@ class WizardCoder:
         logger.debug(f"Device: {self.device}")
         if not use_cuda:
             self.fp16 = False
+            self.bf16 = False
         world_size = int(os.environ.get("WORLD_SIZE", 1))
         self.ddp = world_size != 1
         if self.ddp:
@@ -110,9 +111,11 @@ class WizardCoder:
             **kwargs,
         )
         self.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
+        if self.tokenizer.pad_token_id is None:
+            self.tokenizer.pad_token_id = 0
+        # Set padding side equal to Collator padding side
+        self.tokenizer.padding_side = "left"
 
-        if self.tokenizer.pad_token is None:
-            self.tokenizer.add_special_tokens({"pad_token": "[PAD]"})
         if "starcoder" in model_name_or_path:
             self.tokenizer.add_special_tokens({
                 "eos_token": "<|endoftext|>",
@@ -218,7 +221,7 @@ class WizardCoder:
             bf16=self.bf16,
             report_to=report_to,
             overwrite_output_dir=overwrite_output_dir,
-            no_cuda=True if device == "cpu" else False,
+            no_cuda=True if self.device == "cpu" else False,
             **kwargs
         )
 
@@ -391,8 +394,9 @@ class WizardCoder:
     ) -> Dict:
         """Preprocess the data by tokenizing."""
         examples = [s + t for s, t in zip(sources, targets)]
-        examples_tokenized, sources_tokenized = [self._tokenize_fn(strings, tokenizer) for strings in
-                                                 (examples, sources)]
+        examples_tokenized, sources_tokenized = [
+            self._tokenize_fn(strings, tokenizer) for strings in (examples, sources)
+        ]
         input_ids = examples_tokenized["input_ids"]
         labels = input_ids.copy()
         for label, source_len in zip(labels, sources_tokenized["input_ids_lens"]):
@@ -423,7 +427,7 @@ class WizardCoder:
             keep_prompt: bool = False,
             add_system_prompt: bool = True,
             eval_batch_size: int = 4,
-            max_length=256,
+            max_length: int = 256,
             temperature: int = 1.0,
             top_k: int = 50,
             top_p: float = 0.95,
