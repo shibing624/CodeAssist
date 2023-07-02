@@ -24,15 +24,6 @@
 CodeAssist 是一个高级代码补全工具，高质量为 Python、Java 和 C++ 等编程语言补全代码
 
 
-**Guide**
-
-- [Feature](#Feature)
-- [Install](#install)
-- [Usage](#usage)
-- [Contact](#Contact)
-- [Citation](#Citation)
-- [Reference](#reference)
-
 ## Features
 
 - GPT based code completion
