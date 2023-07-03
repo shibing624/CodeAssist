@@ -279,12 +279,10 @@ version = {1.0.0}
 ```
 
 ## License
+This repository is licensed under the [Apache-2.0 License](LICENSE).
 
-本项目仅可应用于研究目的，项目开发者不承担任何因使用本项目（包含但不限于数据、模型、代码等）导致的危害或损失。详细请参考[DISCLAIMER](https://github.com/shibing624/codeassist/blob/main/DISCLAIMER)。
+Please follow the [Attribution-NonCommercial 4.0 International](https://github.com/nlpxucan/WizardLM/blob/main/WizardCoder/MODEL_WEIGHTS_LICENSE) to use the WizardCoder model.
 
-项目代码的授权协议为 [The Apache License 2.0](/LICENSE)，代码可免费用做商业用途，模型权重和数据只能用于研究目的。请在产品说明中附加codeassist的链接和授权协议。
-
-`WizardLM/WizardCoder-15B-V1.0`的授权协议为 [Attribution-NonCommercial 4.0 International](https://github.com/nlpxucan/WizardLM/blob/main/WizardCoder/MODEL_WEIGHTS_LICENSE)
 
 ## Contribute
 
