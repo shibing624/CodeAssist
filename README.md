@@ -279,7 +279,7 @@ version = {1.0.0}
 ```
 
 ## License
-This repository is licensed under the [Apache-2.0 License](LICENSE).
+This repository is licensed under the [The Apache License 2.0](LICENSE).
 
 Please follow the [Attribution-NonCommercial 4.0 International](https://github.com/nlpxucan/WizardLM/blob/main/WizardCoder/MODEL_WEIGHTS_LICENSE) to use the WizardCoder model.
 
