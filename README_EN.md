@@ -1,20 +1,20 @@
-[**🇨🇳中文**](https://github.com/shibing624/codeassist/blob/main/README.md) | [**🌐English**](https://github.com/shibing624/codeassist/blob/main/README_EN.md) | [**📖文档/Docs**](https://github.com/shibing624/codeassist/wiki) | [**🤖模型/Models**](https://huggingface.co/shibing624) 
+[**🇨🇳中文**](https://github.com/shibing624/CodeAssist/blob/main/README.md) | [**🌐English**](https://github.com/shibing624/CodeAssist/blob/main/README_EN.md) | [**📖文档/Docs**](https://github.com/shibing624/CodeAssist/wiki) | [**🤖模型/Models**](https://huggingface.co/shibing624) 
 
 <div align="center">
-  <a href="https://github.com/shibing624/codeassist">
-    <img src="https://github.com/shibing624/codeassist/blob/main/docs/codeassist.png" height="130" alt="Logo">
+  <a href="https://github.com/shibing624/CodeAssist">
+    <img src="https://github.com/shibing624/CodeAssist/blob/main/docs/codeassist.png" height="130" alt="Logo">
   </a>
 </div>
 
 -----------------
 
 # CodeAssist: Advanced Code Completion Tool
-[![PyPI version](https://badge.fury.io/py/codeassist.svg)](https://badge.fury.io/py/codeassist)
+[![PyPI version](https://badge.fury.io/py/CodeAssist.svg)](https://badge.fury.io/py/CodeAssist)
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![GitHub contributors](https://img.shields.io/github/contributors/shibing624/codeassist.svg)](https://github.com/shibing624/codeassist/graphs/contributors)
+[![GitHub contributors](https://img.shields.io/github/contributors/shibing624/CodeAssist.svg)](https://github.com/shibing624/CodeAssist/graphs/contributors)
 [![License Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![python_vesion](https://img.shields.io/badge/Python-3.5%2B-green.svg)](requirements.txt)
-[![GitHub issues](https://img.shields.io/github/issues/shibing624/codeassist.svg)](https://github.com/shibing624/codeassist/issues)
+[![GitHub issues](https://img.shields.io/github/issues/shibing624/CodeAssist.svg)](https://github.com/shibing624/CodeAssist/issues)
 [![Wechat Group](http://vlog.sfyc.ltd/wechat_everyday/wxgroup_logo.png?imageView2/0/w/60/h/20)](#Contact)
 
 ## Introduction
@@ -241,7 +241,7 @@ DatasetDict({
 
 | Name | Source | Download | Size |
 | :------- | :--------- | :---------: | :---------: |
-| Python+Java+CPP source code | Awesome-pytorch-list(5.22 Million lines) | [github_source_code.zip](https://github.com/shibing624/codeassist/releases/download/0.0.4/source_code.zip) | 105M |
+| Python+Java+CPP source code | Awesome-pytorch-list(5.22 Million lines) | [github_source_code.zip](https://github.com/shibing624/CodeAssist/releases/download/0.0.4/source_code.zip) | 105M |
 
 download dataset and unzip it, put to `examples/`.
 
@@ -258,7 +258,7 @@ python prepare_code_data.py --num_repos 260
 ## Contact
 
 - Issue(建议)
-  ：[![GitHub issues](https://img.shields.io/github/issues/shibing624/codeassist.svg)](https://github.com/shibing624/codeassist/issues)
+  ：[![GitHub issues](https://img.shields.io/github/issues/shibing624/CodeAssist.svg)](https://github.com/shibing624/CodeAssist/issues)
 - 邮件我：xuming: xuming624@qq.com
 - 微信我： 加我*微信号：xuming624, 备注：个人名称-公司-NLP* 进NLP交流群。
 
@@ -266,26 +266,26 @@ python prepare_code_data.py --num_repos 260
 
 ## Citation
 
-如果你在研究中使用了codeassist，请按如下格式引用：
+如果你在研究中使用了CodeAssist，请按如下格式引用：
 
 APA:
 ```latex
-Xu, M. codeassist: Code AutoComplete with GPT model (Version 1.0.0) [Computer software]. https://github.com/shibing624/codeassist
+Xu, M. CodeAssist: Code AutoComplete with GPT model (Version 1.0.0) [Computer software]. https://github.com/shibing624/CodeAssist
 ```
 
 BibTeX:
 ```latex
-@software{Xu_codeassist,
+@software{Xu_CodeAssist,
 author = {Ming Xu},
 title = {CodeAssist: Code AutoComplete with Generation model},
-url = {https://github.com/shibing624/codeassist},
+url = {https://github.com/shibing624/CodeAssist},
 version = {1.0.0}
 }
 ```
 
 ## License
 
-授权协议为 [The Apache License 2.0](/LICENSE)，可免费用做商业用途。请在产品说明中附加codeassist的链接和授权协议。
+授权协议为 [The Apache License 2.0](/LICENSE)，可免费用做商业用途。请在产品说明中附加CodeAssist的链接和授权协议。
 
 ## Contribute
 
