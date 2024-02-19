@@ -14,7 +14,7 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/shibing624/codeassist.svg)](https://github.com/shibing624/codeassist/graphs/contributors)
 [![License Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![python_vesion](https://img.shields.io/badge/Python-3.5%2B-green.svg)](requirements.txt)
-[![GitHub issues](https://img.shields.io/github/issues/shibing624/codeassist.svg)](https://github.com/shibing624/codeassist/issues)
+[![GitHub issues](https://img.shields.io/github/issues/shibing624/CodeAssist.svg)](https://github.com/shibing624/CodeAssist/issues)
 [![Wechat Group](https://img.shields.io/badge/wechat-group-green.svg?logo=wechat)](#Contact)
 
 ## Introduction
