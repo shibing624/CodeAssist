@@ -9,9 +9,9 @@
 -----------------
 
 # CodeAssist: Advanced Code Completion Tool
-[![PyPI version](https://badge.fury.io/py/codeassist.svg)](https://badge.fury.io/py/codeassist)
+[![PyPI version](https://badge.fury.io/py/CodeAssist.svg)](https://badge.fury.io/py/CodeAssist)
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![GitHub contributors](https://img.shields.io/github/contributors/shibing624/codeassist.svg)](https://github.com/shibing624/codeassist/graphs/contributors)
+[![GitHub contributors](https://img.shields.io/github/contributors/shibing624/CodeAssist.svg)](https://github.com/shibing624/CodeAssist/graphs/contributors)
 [![License Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![python_vesion](https://img.shields.io/badge/Python-3.5%2B-green.svg)](requirements.txt)
 [![GitHub issues](https://img.shields.io/github/issues/shibing624/CodeAssist.svg)](https://github.com/shibing624/CodeAssist/issues)
@@ -253,7 +253,7 @@ python prepare_code_data.py --num_repos 260
 ## Contact
 
 - Issue(建议)
-  ：[![GitHub issues](https://img.shields.io/github/issues/shibing624/codeassist.svg)](https://github.com/shibing624/codeassist/issues)
+  ：[![GitHub issues](https://img.shields.io/github/issues/shibing624/CodeAssist.svg)](https://github.com/shibing624/CodeAssist/issues)
 - 邮件我：xuming: xuming624@qq.com
 - 微信我： 加我*微信号：xuming624, 备注：个人名称-公司-NLP* 进NLP交流群。
 
