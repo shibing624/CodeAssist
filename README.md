@@ -40,11 +40,6 @@ CodeAssist 是一个高级代码补全工具，高质量为 Python、Java 和 C+
 | GPT   | bigcode/starcoder | [WizardLM/WizardCoder-15B-V1.0](https://huggingface.co/WizardLM/WizardCoder-15B-V1.0)                                   |    29GB    |
 
 
-### Demo
-
-HuggingFace Demo: https://huggingface.co/spaces/shibing624/code-autocomplete
-
-backend model: `shibing624/code-autocomplete-gpt2-base`
 
 ## Install
 
